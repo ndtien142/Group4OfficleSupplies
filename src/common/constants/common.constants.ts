@@ -1,0 +1,4 @@
+export enum UserStatus {
+  CONNECTING = 'CONNECTING',
+  DISCONNECTED = 'DISCONNECTED',
+}
