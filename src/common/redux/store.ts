@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { reducer as rootConfigSliceReducer } from '@group4officesupplies/common/redux/rootConfigSlice';
 
 import {
   FLUSH,
@@ -19,7 +20,9 @@ const persistConfig = {
   whitelist: ['rootConfigSliceReducer', 'authReducer', 'ratingReducer'],
 };
 
-const rootReducer = combineReducers({});
+const rootReducer = combineReducers({
+  rootConfigSliceReducer,
+});
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
