@@ -15,3 +15,6 @@ export const REGISTER_SUCCESS = 'RegisterSuccess';
 export const TAB_BOTTOM = 'TabBottom';
 
 export const PROFILE = 'Profile';
+export const CART = 'Cart';
+export const ORDER = 'Order';
+export const HOME = 'Home';

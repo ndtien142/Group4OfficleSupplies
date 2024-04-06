@@ -12,6 +12,7 @@ import {
   SPLASH_LOADING,
   INTRO,
   PROFILE,
+  TAB_BOTTOM,
 } from '../constants/route.constant'; // Assuming INTRO is also a route constant
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '../hooks/useAppSelector';
@@ -25,6 +26,7 @@ export type RootStackParamList = {
   Intro: { navigation: any };
   Auth: {}; // Define Auth route type
   Profile: {};
+  TabBottom: {};
 };
 
 // export type InputOTPProps = NativeStackScreenProps<
@@ -67,6 +69,11 @@ const RootStack = () => {
       screenOptions={{
         headerShown: false,
       }}>
+      <Stack.Screen
+        name={TAB_BOTTOM}
+        component={TabBottom}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
       <Stack.Screen
         name={PROFILE}
         component={ProfileScreenContainer}

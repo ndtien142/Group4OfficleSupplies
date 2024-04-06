@@ -1,11 +1,12 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../screen/HomeScreen';
-import DetailScreen from '../screen/DetailScreen';
-import ProductListScreen from '../screen/ProductListScreen';
-import CartScreen from '../screen/CartScreen';
-import OrderScreen from '../screen/OrderScreen';
-import ProfileScreen from '../screen/ProfileScreen';
+import ProfileScreenContainer from '@group4officesupplies/profile';
+// import HomeScreen from '../screen/HomeScreen';
+// import DetailScreen from '../screen/DetailScreen';
+// import ProductListScreen from '../screen/ProductListScreen';
+// import CartScreen from '../screen/CartScreen';
+// import OrderScreen from '../screen/OrderScreen';
+// import ProfileScreen from '../screen/ProfileScreen';
 
 const Stack = createStackNavigator();
 
@@ -19,13 +20,15 @@ const MainStackNavigator: React.FC = () => {
         },
         headerShown: false,
       }}>
-      <Stack.Screen name="home-screen" component={HomeScreen}></Stack.Screen>
+      <Stack.Screen
+        name="home-screen"
+        component={ProfileScreenContainer}></Stack.Screen>
       <Stack.Screen
         name="detail-screen"
-        component={DetailScreen}></Stack.Screen>
+        component={ProfileScreenContainer}></Stack.Screen>
       <Stack.Screen
         name="product-screen"
-        component={ProductListScreen}></Stack.Screen>
+        component={ProfileScreenContainer}></Stack.Screen>
     </Stack.Navigator>
   );
 };
@@ -40,7 +43,9 @@ const CartStackNavigator: React.FC = () => {
         },
         headerShown: false,
       }}>
-      <Stack.Screen name="cart-screen" component={CartScreen}></Stack.Screen>
+      <Stack.Screen
+        name="cart-screen"
+        component={ProfileScreenContainer}></Stack.Screen>
     </Stack.Navigator>
   );
 };
@@ -55,7 +60,9 @@ const OrderStackNavigator: React.FC = () => {
         },
         headerShown: false,
       }}>
-      <Stack.Screen name="order-screen" component={OrderScreen}></Stack.Screen>
+      <Stack.Screen
+        name="order-screen"
+        component={ProfileScreenContainer}></Stack.Screen>
     </Stack.Navigator>
   );
 };
@@ -71,7 +78,7 @@ const ProfileStackNavigator: React.FC = () => {
       }}>
       <Stack.Screen
         name="profile-screen"
-        component={ProfileScreen}></Stack.Screen>
+        component={ProfileScreenContainer}></Stack.Screen>
     </Stack.Navigator>
   );
 };
