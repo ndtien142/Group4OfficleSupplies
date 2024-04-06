@@ -13,7 +13,9 @@ import { Provider } from 'react-redux';
 import RootNavigator from './src/common/navigation/RootNavigator';
 import analytics from '@react-native-firebase/analytics';
 import { QueryClient } from 'react-query';
+import { theme } from './src/common/theme/theme';
 import { store } from './src/common/redux/store';
+import { NativeBaseProvider } from 'native-base';
 
 export default function App() {
   useEffect(() => {
@@ -25,8 +27,10 @@ export default function App() {
   const queryClient = new QueryClient();
 
   return (
-    <Provider store={store}>
-      <RootNavigator />
-    </Provider>
+    <NativeBaseProvider theme={theme}>
+      <Provider store={store}>
+        <RootNavigator />
+      </Provider>
+    </NativeBaseProvider>
   );
 }
