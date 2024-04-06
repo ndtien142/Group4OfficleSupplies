@@ -13,3 +13,5 @@ export const REGISTER_SUCCESS = 'RegisterSuccess';
 
 // 🎉 Route rule TabBottom
 export const TAB_BOTTOM = 'TabBottom';
+
+export const PROFILE = 'Profile';

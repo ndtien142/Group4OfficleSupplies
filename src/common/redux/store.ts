@@ -14,7 +14,7 @@ import {
 } from 'redux-persist';
 
 const persistConfig = {
-  key: 'clever-tube',
+  key: 'office-supplies',
   storage: AsyncStorage,
   whitelist: ['rootConfigSliceReducer', 'authReducer', 'ratingReducer'],
 };
