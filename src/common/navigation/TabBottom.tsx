@@ -5,14 +5,20 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import component from pages
 import { Center, Image, Text } from 'native-base';
 import { useAppSelector } from '../hooks/useAppSelector';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
   CartStackNavigator,
   MainStackNavigator,
   OrderStackNavigator,
   ProfileStackNavigator,
 } from './StackNavigation';
-import { CART, HOME, ORDER, PROFILE } from '../constants/route.constant';
+import {
+  BOTTOM_TAB_CART,
+  BOTTOM_TAB_HOME,
+  BOTTOM_TAB_ORDER,
+  BOTTOM_TAB_PROFILE,
+} from '../constants/route.constant';
 
 const Tab = createBottomTabNavigator();
 
@@ -40,35 +46,35 @@ const TabBottom = () => {
         },
       })}>
       <Tab.Screen
-        name={HOME}
+        name={BOTTOM_TAB_HOME}
         component={MainStackNavigator}
         options={{
           tabBarIcon: ({ size, color }) => (
-            <MaterialIcon name="home" size={size} color={color} />
+            <MaterialCommunityIcons name="home" size={size} color={color} />
           ),
         }}></Tab.Screen>
       <Tab.Screen
-        name={CART}
+        name={BOTTOM_TAB_CART}
         component={CartStackNavigator}
         options={{
           tabBarIcon: ({ size, color }) => (
-            <MaterialIcon name="shopping-cart" size={size} color={color} />
+            <MaterialCommunityIcons name="cart" size={size} color={color} />
           ),
         }}></Tab.Screen>
       <Tab.Screen
-        name={ORDER}
+        name={BOTTOM_TAB_ORDER}
         component={OrderStackNavigator}
         options={{
           tabBarIcon: ({ size, color }) => (
-            <MaterialIcon name="list-alt" size={size} color={color} />
+            <MaterialCommunityIcons name="shopping" size={size} color={color} />
           ),
         }}></Tab.Screen>
       <Tab.Screen
-        name={PROFILE}
+        name={BOTTOM_TAB_PROFILE}
         component={ProfileStackNavigator}
         options={{
           tabBarIcon: ({ size, color }) => (
-            <MaterialIcon name="account-circle" size={size} color={color} />
+            <AntDesign name="user" size={size} color={color} />
           ),
         }}></Tab.Screen>
     </Tab.Navigator>

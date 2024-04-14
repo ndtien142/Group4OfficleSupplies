@@ -13,11 +13,13 @@ import {
   INTRO,
   PROFILE,
   TAB_BOTTOM,
+  HOME,
 } from '../constants/route.constant'; // Assuming INTRO is also a route constant
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '../hooks/useAppSelector';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import ProfileScreenContainer from '@group4officesupplies/profile/index';
+import HomeScreenContainer from '@group4officesupplies/home';
 
 // 🚀 import Constants from file Constants
 
@@ -27,6 +29,7 @@ export type RootStackParamList = {
   Auth: {}; // Define Auth route type
   Profile: {};
   TabBottom: {};
+  Home: {};
 };
 
 // export type InputOTPProps = NativeStackScreenProps<
@@ -72,6 +75,11 @@ const RootStack = () => {
       <Stack.Screen
         name={TAB_BOTTOM}
         component={TabBottom}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={HOME}
+        component={HomeScreenContainer}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen

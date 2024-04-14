@@ -1,6 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import ProfileScreenContainer from '@group4officesupplies/profile';
+import HomeScreenContainer from '@group4officesupplies/home';
+import { HOME } from '../constants/route.constant';
 // import HomeScreen from '../screen/HomeScreen';
 // import DetailScreen from '../screen/DetailScreen';
 // import ProductListScreen from '../screen/ProductListScreen';
@@ -13,22 +15,14 @@ const Stack = createStackNavigator();
 const MainStackNavigator: React.FC = () => {
   return (
     <Stack.Navigator
-      // initialRouteName="detail-screen"
+      initialRouteName={HOME}
       screenOptions={{
         headerStyle: {
           backgroundColor: '#91c4f8',
         },
         headerShown: false,
       }}>
-      <Stack.Screen
-        name="home-screen"
-        component={ProfileScreenContainer}></Stack.Screen>
-      <Stack.Screen
-        name="detail-screen"
-        component={ProfileScreenContainer}></Stack.Screen>
-      <Stack.Screen
-        name="product-screen"
-        component={ProfileScreenContainer}></Stack.Screen>
+      <Stack.Screen name={HOME} component={HomeScreenContainer}></Stack.Screen>
     </Stack.Navigator>
   );
 };
