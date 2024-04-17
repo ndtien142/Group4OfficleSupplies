@@ -15,12 +15,14 @@ import {
 } from './StackNavigation';
 import {
   BOTTOM_TAB_CART,
+  BOTTOM_TAB_EXERCISE,
   BOTTOM_TAB_HOME,
   BOTTOM_TAB_ORDER,
   BOTTOM_TAB_PROFILE,
 } from '../constants/route.constant';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import ExerciseContainer from '@group4officesupplies/exercise';
 
 const Tab = createBottomTabNavigator();
 
@@ -139,6 +141,27 @@ const TabBottom = () => {
                   color={color}
                   size={size}>
                   {t('profile')}
+                </Text>
+              </Flex>
+            </TouchableOpacity>
+          ),
+        }}></Tab.Screen>
+      <Tab.Screen
+        name={BOTTOM_TAB_EXERCISE}
+        component={ExerciseContainer}
+        options={{
+          tabBarIcon: ({ size, color }) => (
+            <TouchableOpacity
+              style={{ width: '100%' }}
+              onPress={() => navigation.navigate(BOTTOM_TAB_EXERCISE as never)}>
+              <Flex alignItems={'center'} justifyContent={'center'}>
+                <AntDesign name="user" size={size} color={color} />
+                <Text
+                  textAlign={'center'}
+                  minWidth={'50px'}
+                  color={color}
+                  size={size}>
+                  {t('exercise')}
                 </Text>
               </Flex>
             </TouchableOpacity>

@@ -14,12 +14,16 @@ import {
   PROFILE,
   TAB_BOTTOM,
   HOME,
+  EXERCISE_SEVEN,
+  EXERCISE_SIX,
 } from '../constants/route.constant'; // Assuming INTRO is also a route constant
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '../hooks/useAppSelector';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import ProfileScreenContainer from '@group4officesupplies/profile/index';
 import HomeScreenContainer from '@group4officesupplies/home';
+import ExerciseOneScreen from '@group4officesupplies/exercise/bai7';
+import ExerciseSixScreen from '@group4officesupplies/exercise/bai6';
 
 // 🚀 import Constants from file Constants
 
@@ -30,6 +34,8 @@ export type RootStackParamList = {
   Profile: {};
   TabBottom: {};
   Home: {};
+  ExerciseSeven: {};
+  ExerciseSix: {}
 };
 
 // export type InputOTPProps = NativeStackScreenProps<
@@ -85,6 +91,16 @@ const RootStack = () => {
       <Stack.Screen
         name={PROFILE}
         component={ProfileScreenContainer}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={EXERCISE_SEVEN}
+        component={ExerciseOneScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={EXERCISE_SIX}
+        component={ExerciseSixScreen}
         options={{ headerShown: false, gestureEnabled: false }}
       />
     </Stack.Navigator>
