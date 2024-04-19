@@ -17,7 +17,7 @@ export const BOTTOM_TAB_HOME = 'TabHome';
 export const BOTTOM_TAB_CART = 'BottomTabCart';
 export const BOTTOM_TAB_ORDER = 'BottomTabOrder';
 export const BOTTOM_TAB_PROFILE = 'BottomTabProfile';
-export const BOTTOM_TAB_EXERCISE = "BottomTabExercise";
+export const BOTTOM_TAB_EXERCISE = 'BottomTabExercise';
 
 // Route rule Screen
 export const PROFILE = 'Profile';
@@ -28,3 +28,6 @@ export const HOME = 'Home';
 // Route exercise Screen
 export const EXERCISE_SEVEN = 'ExerciseSeven';
 export const EXERCISE_SIX = 'ExerciseSix';
+export const EXERCISE_THREE = 'ExerciseThree';
+export const EXERCISE_FIVE = 'ExerciseFive';
+export const STATISTICS = 'Statistic';
