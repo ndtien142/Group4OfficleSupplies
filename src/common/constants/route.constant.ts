@@ -24,10 +24,13 @@ export const PROFILE = 'Profile';
 export const CART = 'Cart';
 export const ORDER = 'Order';
 export const HOME = 'Home';
-
+export const LOGIN = 'Login';
+export const REGISTER = 'Register';
 // Route exercise Screen
 export const EXERCISE_SEVEN = 'ExerciseSeven';
 export const EXERCISE_SIX = 'ExerciseSix';
+export const EXERCISE_ONE = 'ExerciseOne';
+export const EXERCISE_NINE = 'ExerciseNine';
 export const EXERCISE_THREE = 'ExerciseThree';
 export const EXERCISE_FIVE = 'ExerciseFive';
 export const STATISTICS = 'Statistic';

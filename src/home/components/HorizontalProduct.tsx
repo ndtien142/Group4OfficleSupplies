@@ -1,96 +1,109 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import HeaderSection from './HeaderSection';
 import { Box, FlatList, HStack, Image, Stack, Text } from 'native-base';
-import {
-  BOTTOM_TAB_HOME,
-  TAB_BOTTOM,
-} from '@group4officesupplies/common/constants/route.constant';
-import { IProductSection } from '../interface';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { db } from 'firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import ProductItem from './ProductItem';
+import PromotionProductItem from './PromotionalProductItem'; // Import PromotionProductItem
+import { IProductSection } from '../interface';
 
 const HorizontalProduct = ({
   dataSection,
 }: {
   dataSection: IProductSection;
 }) => {
-  const width = 200;
-  const RATIO = 3 / 4;
   const navigation = useNavigation();
+  const [promotionProducts, setPromotionProducts] = useState<any[]>([]);
+  const [normalProducts, setNormalProducts] = useState<any[]>([]);
+  const [showAllProducts, setShowAllProducts] = useState(false);
+
+  useEffect(() => {
+    const fetchPromotionProducts = async () => {
+      try {
+        const querySnapshot = await getDocs(
+          collection(db, 'productsPromotional'),
+        );
+        const promotionProductsData = querySnapshot.docs.map(doc => doc.data());
+        console.log(
+          'Promotion Products from Firestore:',
+          promotionProductsData,
+        );
+        setPromotionProducts(promotionProductsData);
+      } catch (error) {
+        console.error('Error fetching promotion products: ', error);
+      }
+    };
+
+    const fetchNormalProducts = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'products'));
+        const normalProductsData = querySnapshot.docs.map(doc => doc.data());
+        console.log('Normal Products from Firestore:', normalProductsData);
+        setNormalProducts(normalProductsData);
+      } catch (error) {
+        console.error('Error fetching normal products: ', error);
+      }
+    };
+
+    fetchPromotionProducts();
+    fetchNormalProducts();
+  }, []);
+
+  const handleProductPress = (item: any) => {
+    navigation.navigate('DetailProduct' as never);
+  };
+
   return (
-    <Stack space={'20px'} width={'100%'}>
+    <>
       <HeaderSection
-        handleNavigate={() => {
-          navigation.navigate(
-            // @ts-ignore
-            TAB_BOTTOM as never,
-            {
-              screen: BOTTOM_TAB_HOME as never,
-            } as never,
-          );
-        }}
-        title={dataSection?.title}
+        title="Promotion Products"
+        handleNavigate={() => setShowAllProducts(true)}
       />
-      <Stack width={'100%'}>
-        <HStack width={'100%'} overflowY={'auto'}>
-          {dataSection?.item && (
-            <FlatList
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={dataSection?.item}
-              renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity
-                    onPress={() => {
-                      console.log('Press to render detail item');
-                    }}>
-                    <Stack
-                      maxWidth={width}
-                      width={width / RATIO}
-                      space={'12px'}
-                      maxHeight={'200px'}>
-                      <Box width={'100%'} px={'16px'} maxHeight={'106px'}>
-                        <Box
-                          width={'100%'}
-                          overflow={'hidden'}
-                          borderRadius={8}>
-                          <Image
-                            alt="feature-image"
-                            width={'100%'}
-                            height={'100%'}
-                            resizeMode="cover"
-                            source={{
-                              uri: item?.image,
-                            }}
-                            key={`${item?.image} + ${item?.id}`}
-                          />
-                        </Box>
-                      </Box>
-                      <HStack
-                        width={'100%'}
-                        px={'16px'}
-                        space={'16px'}
-                        alignItems={'center'}
-                        justifyContent={'space-between'}>
-                        <Stack width={'90%'}>
-                          <Text
-                            color={'#000'}
-                            fontWeight={600}
-                            isTruncated
-                            numberOfLines={2}>
-                            {item?.title}
-                          </Text>
-                        </Stack>
-                      </HStack>
-                    </Stack>
-                  </TouchableOpacity>
-                );
-              }}
-            />
+      <HStack width={'100%'} overflowY={'auto'}>
+        <FlatList
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          data={
+            showAllProducts ? promotionProducts : promotionProducts.slice(0, 5)
+          }
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => handleProductPress(item)}>
+              <PromotionProductItem
+                title={item.title}
+                brand={item.brand}
+                image={item.image}
+                price={item.price}
+                salePrice={item.salePrice}
+              />
+            </TouchableOpacity>
           )}
-        </HStack>
-      </Stack>
-    </Stack>
+        />
+      </HStack>
+
+      <HeaderSection
+        title="Products"
+        handleNavigate={() => setShowAllProducts(true)}
+      />
+      <HStack width={'100%'} overflowY={'auto'}>
+        <FlatList
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          data={showAllProducts ? normalProducts : normalProducts.slice(0, 5)}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => handleProductPress(item)}>
+              <ProductItem
+                title={item.title}
+                brand={item.brand}
+                image={item.image}
+                price={item.price}
+              />
+            </TouchableOpacity>
+          )}
+        />
+      </HStack>
+    </>
   );
 };
 

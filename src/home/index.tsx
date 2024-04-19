@@ -11,8 +11,18 @@ import {
 import HomeHeader from './components/HomeHeader';
 import Service from './components/Service';
 import HorizontalProduct from './components/HorizontalProduct';
+import ProductListScreen from './components/ProductListScreen';
+import { ProductProvider } from '@group4officesupplies/features/productContext';
+
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreenContainer = () => {
+  const initialValue: never[] = [];
+  const navigation = useNavigation();
+  const navigationOptions = {
+    headerShown: false,
+    gestureEnabled: false,
+  };
   return (
     <SafeAreaView>
       <ScrollView

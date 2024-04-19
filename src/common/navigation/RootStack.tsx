@@ -16,6 +16,9 @@ import {
   HOME,
   EXERCISE_SEVEN,
   EXERCISE_SIX,
+  EXERCISE_ONE,
+  EXERCISE_NINE,
+  LOGIN,
   EXERCISE_THREE,
   EXERCISE_FIVE,
   STATISTICS,
@@ -25,8 +28,16 @@ import { useAppSelector } from '../hooks/useAppSelector';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import ProfileScreenContainer from '@group4officesupplies/profile/index';
 import HomeScreenContainer from '@group4officesupplies/home';
-import ExerciseOneScreen from '@group4officesupplies/exercise/bai7';
+import ExerciseSevenScreen from '@group4officesupplies/exercise/bai7';
 import ExerciseSixScreen from '@group4officesupplies/exercise/bai6';
+import App from '@group4officesupplies/exercise/bai1/App';
+import AppBai9 from '@group4officesupplies/exercise/bai9/AppBai9';
+import ExerciseNineScreen from '@group4officesupplies/exercise/bai9';
+import Login from '@group4officesupplies/home/components/Login';
+import Register from '@group4officesupplies/home/components/Register';
+import OTPScreen from '@group4officesupplies/home/components/OTPScreen';
+import ProductListScreen from '@group4officesupplies/home/components/ProductListScreen';
+import DetailProduct from '@group4officesupplies/home/components/DetailProduct';
 import ExerciseThreeScreen from '@group4officesupplies/exercise/bai3';
 import ExerciseFiveScreen from '@group4officesupplies/exercise/bai5';
 import StatisticScreen from '@group4officesupplies/statistic';
@@ -42,6 +53,13 @@ export type RootStackParamList = {
   Home: {};
   ExerciseSeven: {};
   ExerciseSix: {};
+  ExerciseOne: {};
+  ExerciseNine: {};
+  Login: undefined;
+  Register: undefined;
+  OTPScreen: undefined;
+  ProductList: {};
+  DetailProduct: {};
   ExerciseThree: {};
   ExerciseFive: {};
   Statistic: {};
@@ -104,7 +122,7 @@ const RootStack = () => {
       />
       <Stack.Screen
         name={EXERCISE_SEVEN}
-        component={ExerciseOneScreen}
+        component={ExerciseSevenScreen}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
@@ -113,13 +131,48 @@ const RootStack = () => {
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name={EXERCISE_THREE}
-        component={ExerciseThreeScreen}
+        name={EXERCISE_ONE}
+        component={App}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={EXERCISE_NINE}
+        component={AppBai9}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name="OTPScreen"
+        component={OTPScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name="ProductList"
+        component={ProductListScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name="DetailProduct"
+        component={DetailProduct}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
         name={EXERCISE_FIVE}
         component={ExerciseFiveScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={EXERCISE_THREE}
+        component={ExerciseThreeScreen}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen

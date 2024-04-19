@@ -3,9 +3,10 @@ import React from 'react';
 import { HStack, Image, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { LOGIN } from '@group4officesupplies/common/constants/route.constant';
 
 const HomeHeader = () => {
-  const navigator = useNavigation();
+  const navigation = useNavigation();
 
   return (
     <HStack
@@ -15,13 +16,7 @@ const HomeHeader = () => {
       justifyContent={'space-between'}
       bgColor={'white'}>
       <HStack alignItems={'center'} space={2}>
-        {/* <Image
-          source={imageLogo.LOGO_MINI}
-          width={'32px'}
-          height={'32px'}
-          resizeMode={'contain'}
-          alt={'image'}
-        /> */}
+        {/* <Image source={imageLogo.LOGO_MINI} width={'32px'} height={'32px'} resizeMode={'contain'} alt={'image'} /> */}
         <Text
           fontSize={'20px'}
           fontWeight={700}
@@ -37,6 +32,15 @@ const HomeHeader = () => {
           </Text>
         </Text>
       </HStack>
+      <TouchableOpacity onPress={() => navigation.navigate(LOGIN as never)}>
+        <Image
+          source={require('C:/Users/acer/Desktop/Group4OfficleSupplies/src/resources/images/logo.png')} // Assuming relative path
+          width={'32px'}
+          height={'32px'}
+          resizeMode={'contain'}
+          alt={'Login'}
+        />
+      </TouchableOpacity>
     </HStack>
   );
 };

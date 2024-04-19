@@ -1,5 +1,7 @@
 import {
   EXERCISE_FIVE,
+  EXERCISE_NINE,
+  EXERCISE_ONE,
   EXERCISE_SEVEN,
   EXERCISE_SIX,
   EXERCISE_THREE,
@@ -19,6 +21,16 @@ const ExerciseContainer = () => {
           Bài tập trên lớp
         </Text>
         <Stack space={'20px'} mt={'30px'}>
+          <Button
+            onPress={() => navigation.navigate(EXERCISE_ONE as never)}
+            borderRadius={'12px'}
+            _text={{
+              fontSize: '16px',
+              fontWeight: '600',
+              color: 'white',
+            }}>
+            Bài tập 1
+          </Button>
           <Button
             onPress={() => navigation.navigate(EXERCISE_THREE as never)}
             borderRadius={'12px'}
@@ -58,6 +70,16 @@ const ExerciseContainer = () => {
               color: 'white',
             }}>
             Bài tập 7
+          </Button>
+          <Button
+            onPress={() => navigation.navigate(EXERCISE_NINE as never)}
+            borderRadius={'12px'}
+            _text={{
+              fontSize: '16px',
+              fontWeight: '600',
+              color: 'white',
+            }}>
+            Bài tập 9
           </Button>
           <Button
             onPress={() => navigation.navigate(STATISTICS as never)}
