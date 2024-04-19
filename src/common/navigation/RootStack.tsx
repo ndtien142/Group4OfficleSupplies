@@ -18,6 +18,7 @@ import {
   EXERCISE_SIX,
   EXERCISE_THREE,
   EXERCISE_FIVE,
+  STATISTICS,
 } from '../constants/route.constant'; // Assuming INTRO is also a route constant
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '../hooks/useAppSelector';
@@ -28,6 +29,7 @@ import ExerciseOneScreen from '@group4officesupplies/exercise/bai7';
 import ExerciseSixScreen from '@group4officesupplies/exercise/bai6';
 import ExerciseThreeScreen from '@group4officesupplies/exercise/bai3';
 import ExerciseFiveScreen from '@group4officesupplies/exercise/bai5';
+import StatisticScreen from '@group4officesupplies/statistic';
 
 // 🚀 import Constants from file Constants
 
@@ -42,6 +44,7 @@ export type RootStackParamList = {
   ExerciseSix: {};
   ExerciseThree: {};
   ExerciseFive: {};
+  Statistic: {};
 };
 
 // export type InputOTPProps = NativeStackScreenProps<
@@ -117,6 +120,11 @@ const RootStack = () => {
       <Stack.Screen
         name={EXERCISE_FIVE}
         component={ExerciseFiveScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={STATISTICS}
+        component={StatisticScreen}
         options={{ headerShown: false, gestureEnabled: false }}
       />
     </Stack.Navigator>

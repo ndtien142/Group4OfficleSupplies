@@ -30,3 +30,4 @@ export const EXERCISE_SEVEN = 'ExerciseSeven';
 export const EXERCISE_SIX = 'ExerciseSix';
 export const EXERCISE_THREE = 'ExerciseThree';
 export const EXERCISE_FIVE = 'ExerciseFive';
+export const STATISTICS = 'Statistic';

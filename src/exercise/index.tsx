@@ -3,6 +3,7 @@ import {
   EXERCISE_SEVEN,
   EXERCISE_SIX,
   EXERCISE_THREE,
+  STATISTICS,
 } from '@group4officesupplies/common/constants/route.constant';
 import { useNavigation } from '@react-navigation/native';
 import { Button, ScrollView, Stack, Text } from 'native-base';
@@ -57,6 +58,16 @@ const ExerciseContainer = () => {
               color: 'white',
             }}>
             Bài tập 7
+          </Button>
+          <Button
+            onPress={() => navigation.navigate(STATISTICS as never)}
+            borderRadius={'12px'}
+            _text={{
+              fontSize: '16px',
+              fontWeight: '600',
+              color: 'white',
+            }}>
+            Thống kê
           </Button>
         </Stack>
       </ScrollView>
