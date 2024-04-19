@@ -17,14 +17,17 @@ export const BOTTOM_TAB_HOME = 'TabHome';
 export const BOTTOM_TAB_CART = 'BottomTabCart';
 export const BOTTOM_TAB_ORDER = 'BottomTabOrder';
 export const BOTTOM_TAB_PROFILE = 'BottomTabProfile';
-export const BOTTOM_TAB_EXERCISE = "BottomTabExercise";
+export const BOTTOM_TAB_EXERCISE = 'BottomTabExercise';
 
 // Route rule Screen
 export const PROFILE = 'Profile';
 export const CART = 'Cart';
 export const ORDER = 'Order';
 export const HOME = 'Home';
-
+export const LOGIN = 'Login';
+export const REGISTER = 'Register';
 // Route exercise Screen
 export const EXERCISE_SEVEN = 'ExerciseSeven';
 export const EXERCISE_SIX = 'ExerciseSix';
+export const EXERCISE_ONE = 'ExerciseOne';
+export const EXERCISE_NINE = 'ExerciseNine';

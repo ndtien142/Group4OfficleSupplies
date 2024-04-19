@@ -65,7 +65,7 @@ export const servicesSection: IServiceItem[] = [
 const mockProducts: IDataProductItem[] = [
   {
     id: 1,
-    title: 'Product 1',
+    title: 'Bút chì',
     price: 100,
     salePrice: 80,
     available: true,
@@ -80,7 +80,7 @@ const mockProducts: IDataProductItem[] = [
   },
   {
     id: 2,
-    title: 'Product 2',
+    title: 'Bút màu',
     price: 120,
     salePrice: 100,
     available: true,
@@ -95,7 +95,7 @@ const mockProducts: IDataProductItem[] = [
   },
   {
     id: 3,
-    title: 'Product 3',
+    title: 'Tệp hồ sơ',
     price: 90,
     salePrice: 70,
     available: true,
@@ -110,7 +110,7 @@ const mockProducts: IDataProductItem[] = [
   },
   {
     id: 4,
-    title: 'Product 4',
+    title: 'Bút xoá',
     price: 150,
     salePrice: 120,
     available: true,
@@ -125,7 +125,7 @@ const mockProducts: IDataProductItem[] = [
   },
   {
     id: 5,
-    title: 'Product 5',
+    title: 'Thước kẻ',
     price: 80,
     salePrice: 60,
     available: false,
@@ -140,7 +140,7 @@ const mockProducts: IDataProductItem[] = [
   },
   {
     id: 6,
-    title: 'Product 6',
+    title: 'Hộp màu',
     price: 110,
     salePrice: 90,
     available: true,
@@ -155,7 +155,7 @@ const mockProducts: IDataProductItem[] = [
   },
   {
     id: 7,
-    title: 'Product 7',
+    title: 'Cọ vẽ',
     price: 130,
     salePrice: 100,
     available: true,
@@ -170,7 +170,7 @@ const mockProducts: IDataProductItem[] = [
   },
   {
     id: 8,
-    title: 'Product 8',
+    title: 'Mực vẽ',
     price: 95,
     salePrice: 75,
     available: true,
@@ -185,7 +185,7 @@ const mockProducts: IDataProductItem[] = [
   },
   {
     id: 9,
-    title: 'Product 9',
+    title: 'Bút chì',
     price: 140,
     salePrice: 110,
     available: false,
@@ -200,7 +200,7 @@ const mockProducts: IDataProductItem[] = [
   },
   {
     id: 10,
-    title: 'Product 10',
+    title: 'Đầu bút màu',
     price: 75,
     salePrice: 55,
     available: true,

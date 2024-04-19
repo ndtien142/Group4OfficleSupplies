@@ -1,4 +1,9 @@
-import { EXERCISE_SEVEN, EXERCISE_SIX } from '@group4officesupplies/common/constants/route.constant';
+import {
+  EXERCISE_NINE,
+  EXERCISE_ONE,
+  EXERCISE_SEVEN,
+  EXERCISE_SIX,
+} from '@group4officesupplies/common/constants/route.constant';
 import { useNavigation } from '@react-navigation/native';
 import { Button, Text } from 'native-base';
 import React from 'react';
@@ -13,13 +18,23 @@ const ExerciseContainer = () => {
       </Text>
       <Button
         variant={'outline'}
-        onPress={() => navigation.navigate(EXERCISE_SEVEN as never)}>
-        Bai tap 6
+        onPress={() => navigation.navigate(EXERCISE_ONE as never)}>
+        Bai tap 1
+      </Button>
+      <Button
+        variant={'outline'}
+        onPress={() => navigation.navigate(EXERCISE_NINE as never)}>
+        Bai tap 9
       </Button>
       <Button
         variant={'outline'}
         onPress={() => navigation.navigate(EXERCISE_SIX as never)}>
-        Bai tap 7``
+        Bai tap 6
+      </Button>
+      <Button
+        variant={'outline'}
+        onPress={() => navigation.navigate(EXERCISE_SEVEN as never)}>
+        Bai tap 7
       </Button>
     </SafeAreaView>
   );
