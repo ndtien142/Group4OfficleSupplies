@@ -19,6 +19,9 @@ import {
   EXERCISE_ONE,
   EXERCISE_NINE,
   LOGIN,
+  EXERCISE_THREE,
+  EXERCISE_FIVE,
+  STATISTICS,
 } from '../constants/route.constant'; // Assuming INTRO is also a route constant
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '../hooks/useAppSelector';
@@ -35,6 +38,9 @@ import Register from '@group4officesupplies/home/components/Register';
 import OTPScreen from '@group4officesupplies/home/components/OTPScreen';
 import ProductListScreen from '@group4officesupplies/home/components/ProductListScreen';
 import DetailProduct from '@group4officesupplies/home/components/DetailProduct';
+import ExerciseThreeScreen from '@group4officesupplies/exercise/bai3';
+import ExerciseFiveScreen from '@group4officesupplies/exercise/bai5';
+import StatisticScreen from '@group4officesupplies/statistic';
 
 // 🚀 import Constants from file Constants
 
@@ -54,6 +60,9 @@ export type RootStackParamList = {
   OTPScreen: undefined;
   ProductList: {};
   DetailProduct: {};
+  ExerciseThree: {};
+  ExerciseFive: {};
+  Statistic: {};
 };
 
 // export type InputOTPProps = NativeStackScreenProps<
@@ -154,6 +163,21 @@ const RootStack = () => {
       <Stack.Screen
         name="DetailProduct"
         component={DetailProduct}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={EXERCISE_FIVE}
+        component={ExerciseFiveScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={EXERCISE_THREE}
+        component={ExerciseThreeScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={STATISTICS}
+        component={StatisticScreen}
         options={{ headerShown: false, gestureEnabled: false }}
       />
     </Stack.Navigator>

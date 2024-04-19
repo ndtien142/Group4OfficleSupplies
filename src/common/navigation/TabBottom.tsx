@@ -155,7 +155,11 @@ const TabBottom = () => {
               style={{ width: '100%' }}
               onPress={() => navigation.navigate(BOTTOM_TAB_EXERCISE as never)}>
               <Flex alignItems={'center'} justifyContent={'center'}>
-                <AntDesign name="user" size={size} color={color} />
+                <MaterialCommunityIcons
+                  name="notebook-minus-outline"
+                  size={size}
+                  color={color}
+                />
                 <Text
                   textAlign={'center'}
                   minWidth={'50px'}

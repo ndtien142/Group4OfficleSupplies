@@ -10,10 +10,10 @@ const ServiceItem = ({ data }: { data: IServiceItem }) => {
   const handleNavigateService = () => {
     if (route) {
       // @ts-ignore
-      navigator.navigate(link as never, {} as never);
+      // navigator.navigate(link as never, {} as never);
     } else if (deep_link) {
       // @ts-ignore
-      navigator.navigate(deep_link as never, {} as never);
+      // navigator.navigate(deep_link as never, {} as never);
     }
   };
   return (
