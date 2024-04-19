@@ -15,6 +15,35 @@ export const getProducts = async () => {
   }
 };
 
+export const getReportMonthly = async () => {
+  try {
+    const reportsRef = collection(db, 'reportsMonthly');
+    const reportsSnapshot = await getDocs(reportsRef);
+    const reports = reportsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      data: doc.data,
+      ...doc.data(),
+    }));
+    return reports;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const getReport = async () => {
+  try {
+    const reportsRef = collection(db, 'reports');
+    const reportsSnapshot = await getDocs(reportsRef);
+    const reports = reportsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      data: doc.data,
+      ...doc.data(),
+    }));
+    return reports;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getProductById = async productId => {
   try {
     console.log('prod', productId);
