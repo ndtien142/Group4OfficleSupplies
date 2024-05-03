@@ -18,6 +18,7 @@ export const BOTTOM_TAB_CART = 'BottomTabCart';
 export const BOTTOM_TAB_ORDER = 'BottomTabOrder';
 export const BOTTOM_TAB_PROFILE = 'BottomTabProfile';
 export const BOTTOM_TAB_EXERCISE = 'BottomTabExercise';
+export const BOTTOM_TAB_MANAGER = 'BottomTabManager';
 
 // Route rule Screen
 export const PROFILE = 'Profile';

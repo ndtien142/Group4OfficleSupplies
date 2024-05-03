@@ -19,10 +19,12 @@ import {
   BOTTOM_TAB_HOME,
   BOTTOM_TAB_ORDER,
   BOTTOM_TAB_PROFILE,
+  BOTTOM_TAB_MANAGER,
 } from '../constants/route.constant';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import ExerciseContainer from '@group4officesupplies/exercise';
+import ManagerContainer from '@group4officesupplies/manager';
 
 const Tab = createBottomTabNavigator();
 
@@ -166,6 +168,31 @@ const TabBottom = () => {
                   color={color}
                   size={size}>
                   {t('exercise')}
+                </Text>
+              </Flex>
+            </TouchableOpacity>
+          ),
+        }}></Tab.Screen>
+        <Tab.Screen
+        name={BOTTOM_TAB_MANAGER}
+        component={ManagerContainer}
+        options={{
+          tabBarIcon: ({ size, color }) => (
+            <TouchableOpacity
+              style={{ width: '100%' }}
+              onPress={() => navigation.navigate(BOTTOM_TAB_MANAGER as never)}>
+              <Flex alignItems={'center'} justifyContent={'center'}>
+                <MaterialCommunityIcons
+                  name="account-details-outline"
+                  size={size}
+                  color={color}
+                />
+                <Text
+                  textAlign={'center'}
+                  minWidth={'50px'}
+                  color={color}
+                  size={size}>
+                  {t('manager')}
                 </Text>
               </Flex>
             </TouchableOpacity>

@@ -38,7 +38,7 @@ const Login = () => {
     <View style={styles.container}>
       <View style={styles.logoContainer}>
         <Image
-          source={require('C:/Users/acer/Desktop/Group4OfficleSupplies/src/resources/images/mainLogo.png')}
+          source={require('D:/BAITAP/Group4OfficleSupplies/src/resources/images/mainLogo.png')}
           style={styles.logo}
         />
         <Text style={styles.title}>Đăng nhập</Text>
