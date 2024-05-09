@@ -33,13 +33,13 @@ const HomeHeader = () => {
         </Text>
       </HStack>
       <TouchableOpacity onPress={() => navigation.navigate(LOGIN as never)}>
-        <Image
-          source={require('D:/BAITAP/Group4OfficleSupplies/src/resources/images/mainLogo.png')} // Assuming relative path
+        {/* <Image
+          source={require('C:/Users/acer/Desktop/Group4OfficleSupplies/src/resources/images/logo.png')} // Assuming relative path
           width={'32px'}
           height={'32px'}
           resizeMode={'contain'}
           alt={'Login'}
-        />
+        /> */}
       </TouchableOpacity>
     </HStack>
   );

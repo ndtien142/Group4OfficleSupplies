@@ -25,6 +25,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import ExerciseContainer from '@group4officesupplies/exercise';
 import ManagerContainer from '@group4officesupplies/manager';
+import StatisticScreen from '@group4officesupplies/statistic';
 
 const Tab = createBottomTabNavigator();
 
@@ -150,7 +151,7 @@ const TabBottom = () => {
         }}></Tab.Screen>
       <Tab.Screen
         name={BOTTOM_TAB_EXERCISE}
-        component={ExerciseContainer}
+        component={StatisticScreen}
         options={{
           tabBarIcon: ({ size, color }) => (
             <TouchableOpacity
@@ -158,7 +159,7 @@ const TabBottom = () => {
               onPress={() => navigation.navigate(BOTTOM_TAB_EXERCISE as never)}>
               <Flex alignItems={'center'} justifyContent={'center'}>
                 <MaterialCommunityIcons
-                  name="notebook-minus-outline"
+                  name="monitor-dashboard"
                   size={size}
                   color={color}
                 />
@@ -173,7 +174,7 @@ const TabBottom = () => {
             </TouchableOpacity>
           ),
         }}></Tab.Screen>
-        <Tab.Screen
+      <Tab.Screen
         name={BOTTOM_TAB_MANAGER}
         component={ManagerContainer}
         options={{
