@@ -37,10 +37,6 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        {/* <Image
-          source={require('C:/Users/acer/Desktop/Group4OfficleSupplies/src/resources/images/mainLogo.png')}
-          style={styles.logo}
-        /> */}
         <Text style={styles.title}>Đăng nhập</Text>
       </View>
       {error ? <Text style={styles.error}>{error}</Text> : null}

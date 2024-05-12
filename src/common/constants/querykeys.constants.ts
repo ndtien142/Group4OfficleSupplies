@@ -1,0 +1,4 @@
+export const QUERY_KEYS = Object.freeze({
+  NORMAL_PRODUCT: 'NORMAL_PRODUCT',
+  PROMOTION_PRODUCT: 'PROMOTION_PRODUCT',
+});
