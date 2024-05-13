@@ -27,6 +27,10 @@ export const ORDER = 'Order';
 export const HOME = 'Home';
 export const LOGIN = 'Login';
 export const REGISTER = 'Register';
+
+// router product
+export const DETAIL_PRODUCT = 'DetailProduct';
+
 // Route exercise Screen
 export const EXERCISE_SEVEN = 'ExerciseSeven';
 export const EXERCISE_SIX = 'ExerciseSix';

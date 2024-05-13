@@ -8,9 +8,7 @@ import React, { useEffect } from 'react';
 // 🚀 import Components from Pages
 import TabBottom from './TabBottom';
 import {
-  AUTH,
   SPLASH_LOADING,
-  INTRO,
   PROFILE,
   TAB_BOTTOM,
   HOME,
@@ -22,6 +20,7 @@ import {
   EXERCISE_THREE,
   EXERCISE_FIVE,
   STATISTICS,
+  DETAIL_PRODUCT,
 } from '../constants/route.constant'; // Assuming INTRO is also a route constant
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '../hooks/useAppSelector';
@@ -37,10 +36,10 @@ import Login from '@group4officesupplies/home/components/Login';
 import Register from '@group4officesupplies/home/components/Register';
 import OTPScreen from '@group4officesupplies/home/components/OTPScreen';
 import ProductListScreen from '@group4officesupplies/home/components/ProductListScreen';
-import DetailProduct from '@group4officesupplies/home/components/DetailProduct';
 import ExerciseThreeScreen from '@group4officesupplies/exercise/bai3';
 import ExerciseFiveScreen from '@group4officesupplies/exercise/bai5';
 import StatisticScreen from '@group4officesupplies/statistic';
+import DetailProductScreen from '@group4officesupplies/detail-product';
 
 // 🚀 import Constants from file Constants
 
@@ -161,11 +160,6 @@ const RootStack = () => {
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="DetailProduct"
-        component={DetailProduct}
-        options={{ headerShown: false, gestureEnabled: false }}
-      />
-      <Stack.Screen
         name={EXERCISE_FIVE}
         component={ExerciseFiveScreen}
         options={{ headerShown: false, gestureEnabled: false }}
@@ -178,6 +172,11 @@ const RootStack = () => {
       <Stack.Screen
         name={STATISTICS}
         component={StatisticScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={DETAIL_PRODUCT}
+        component={DetailProductScreen}
         options={{ headerShown: false, gestureEnabled: false }}
       />
     </Stack.Navigator>

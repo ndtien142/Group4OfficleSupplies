@@ -38,21 +38,18 @@ export const getProductById = async (
   }
 };
 
-export const getProductPromotional = async (): Promise<
+export const getPromotionalProducts = async (): Promise<
   IProductPromotional[]
 > => {
   try {
-    const snapshot = await firestore()
-      .collection(PRODUCT_PROMOTION_COLLECTION)
-      .get();
-    console.log('snapshot', snapshot);
-    // Map over the documents and return the data
-    return snapshot.docs.map(doc => {
-      console.log('doc::productPromotional:::', doc.data());
+    const snapshot = await firestore().collection('productsPromotional').get();
+    const products = snapshot.docs.map(doc => {
       return { id: doc.id, ...doc.data() } as IProductPromotional;
     });
+    console.log('Promotional Products from Firestore:', products);
+    return products;
   } catch (error) {
-    console.error('Error getting promotion: ', error);
-    throw error; // Re-throw the error to handle it at the caller level
+    console.error('Error getting promotional products: ', error);
+    throw error;
   }
 };

@@ -150,31 +150,6 @@ const TabBottom = () => {
           ),
         }}></Tab.Screen>
       <Tab.Screen
-        name={BOTTOM_TAB_EXERCISE}
-        component={StatisticScreen}
-        options={{
-          tabBarIcon: ({ size, color }) => (
-            <TouchableOpacity
-              style={{ width: '100%' }}
-              onPress={() => navigation.navigate(BOTTOM_TAB_EXERCISE as never)}>
-              <Flex alignItems={'center'} justifyContent={'center'}>
-                <MaterialCommunityIcons
-                  name="monitor-dashboard"
-                  size={size}
-                  color={color}
-                />
-                <Text
-                  textAlign={'center'}
-                  minWidth={'50px'}
-                  color={color}
-                  size={size}>
-                  {t('exercise')}
-                </Text>
-              </Flex>
-            </TouchableOpacity>
-          ),
-        }}></Tab.Screen>
-      <Tab.Screen
         name={BOTTOM_TAB_MANAGER}
         component={ManagerContainer}
         options={{

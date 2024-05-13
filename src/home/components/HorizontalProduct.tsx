@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import HeaderSection from './HeaderSection';
 import { FlatList, HStack } from 'native-base';
 import { TouchableOpacity } from 'react-native';
@@ -8,6 +8,9 @@ import PromotionProductItem from './PromotionalProductItem'; // Import Promotion
 import { IProductSection } from '../interface';
 import { useGetProducts } from '@group4officesupplies/common/hooks/product/useGetProduct';
 import { useGetPromotionProduct } from '@group4officesupplies/common/hooks/product/useGetPromotionProduct';
+import { getProductById } from '@group4officesupplies/common/services/product.service';
+import { IProduct } from '@group4officesupplies/common/interface/product.interface';
+import { DETAIL_PRODUCT } from '@group4officesupplies/common/constants/route.constant';
 
 const HorizontalProduct = ({
   dataSection,
@@ -16,42 +19,14 @@ const HorizontalProduct = ({
 }) => {
   const navigation = useNavigation();
   const { data: normalProduct } = useGetProducts();
-  const { data: promotionProduct } = useGetPromotionProduct();
-
-  console.log(promotionProduct);
   const [showAllProducts, setShowAllProducts] = useState(false);
 
-  const handleProductPress = (item: any) => {
-    navigation.navigate('DetailProduct' as never);
+  const handleProductPress = (item: IProduct) => {
+    navigation.navigate(DETAIL_PRODUCT as never, { productId: item?.id });
   };
 
   return (
     <>
-      <HeaderSection
-        title="Promotion Products"
-        handleNavigate={() => setShowAllProducts(true)}
-      />
-      <HStack width={'100%'} overflowY={'auto'}>
-        <FlatList
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          data={promotionProduct}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            // @ts-ignore
-            <TouchableOpacity onPress={() => handleProductPress(item)}>
-              <PromotionProductItem
-                title={item.title}
-                brand={item.brand}
-                image={item.image}
-                price={item.price}
-                salePrice={item.salePrice}
-              />
-            </TouchableOpacity>
-          )}
-        />
-      </HStack>
-
       <HeaderSection
         title="Products"
         handleNavigate={() => setShowAllProducts(true)}
