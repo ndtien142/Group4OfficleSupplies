@@ -4,8 +4,13 @@ buildscript {
         minSdkVersion = 21
         compileSdkVersion = 34
         targetSdkVersion = 34
-        ndkVersion = "21.3.6528147"
+        // ndkVersion = "21.3.6528147"
         kotlinVersion = "1.8.0"
+        if (System.properties['os.arch'] == "aarch64") {
+            ndkVersion = "24.0.8215888"
+        } else {
+            ndkVersion = "23.1.7779620"
+        }
     }
     repositories {
         google()

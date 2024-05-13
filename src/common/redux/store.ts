@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { reducer as rootConfigSliceReducer } from '@group4officesupplies/common/redux/rootConfigSlice';
+import { reducer as imagePickerReducer } from '@group4officesupplies/common/components/image-picker/imagePicker.slice';
 
 import {
   FLUSH,
@@ -22,6 +23,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   rootConfigSliceReducer,
+  imagePickerReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
