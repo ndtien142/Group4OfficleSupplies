@@ -12,12 +12,13 @@ import {
   VStack,
 } from 'native-base';
 import React, { useState } from 'react';
-import { Dimensions, TouchableOpacity } from 'react-native';
+import { Dimensions, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CartSkeleton from './components/CartSkeleton';
+import { useGetCart } from './hooks/useGetCart';
 // import { useGetCart } from './hooks/';
 
 // import { useGetDetailProduct } from './hooks/useGetDetailProduct';
@@ -32,7 +33,7 @@ interface Item {
   price: number;
 }
 
-const CartScreenContainer: React.FC = () => {
+const CartScreenContainer = () => {
   //   const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
   //     useContext(AuthContext);
 
@@ -50,14 +51,27 @@ const CartScreenContainer: React.FC = () => {
   const [qty, setQty] = useState(1);
 
   // @ts-ignore
-  const id = router?.params?.CartItemsId;
+  const id = router?.params?.userID
+    ? 'LsjNM7U2G0OWLGaKtTuziX6MCls1'
+    : 'LsjNM7U2G0OWLGaKtTuziX6MCls1';
   const navigation = useNavigation();
-
-  // const { data: product, isLoading } = useGetCartItems(id as string);
   const { data: cart, isLoading } = useGetCart(id as string);
+
   return (
     <SafeAreaView>
+      {cart && cart.length > 0 ? (
+        cart.map((item, index) => (
+          <View key={index}>
+            <Text color={'#000'}>
+              Product ID: {item.productID}, Quantity: {item.quantity}
+            </Text>
+          </View>
+        ))
+      ) : (
+        <Text>No items in cart.</Text>
+      )}
       {/* Header */}
+      <Text color={'#000'}> he he{id}</Text>
       <Stack
         height={'100%'}
         alignItems={'center'}

@@ -21,6 +21,7 @@ import {
   EXERCISE_FIVE,
   STATISTICS,
   DETAIL_PRODUCT,
+  CART,
 } from '../constants/route.constant'; // Assuming INTRO is also a route constant
 import { useNavigation } from '@react-navigation/native';
 import { useAppSelector } from '../hooks/useAppSelector';
@@ -40,6 +41,7 @@ import ExerciseThreeScreen from '@group4officesupplies/exercise/bai3';
 import ExerciseFiveScreen from '@group4officesupplies/exercise/bai5';
 import StatisticScreen from '@group4officesupplies/statistic';
 import DetailProductScreen from '@group4officesupplies/detail-product';
+import CartScreenContainer from '@group4officesupplies/cart';
 
 // 🚀 import Constants from file Constants
 
@@ -47,6 +49,7 @@ export type RootStackParamList = {
   SplashLoading: {};
   Intro: { navigation: any };
   Auth: {}; // Define Auth route type
+  Cart: {};
   Profile: {};
   TabBottom: {};
   Home: {};
@@ -117,6 +120,11 @@ const RootStack = () => {
       <Stack.Screen
         name={PROFILE}
         component={ProfileScreenContainer}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={CART}
+        component={CartScreenContainer}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen

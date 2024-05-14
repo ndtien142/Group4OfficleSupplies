@@ -1,16 +1,19 @@
 import firestore from '@react-native-firebase/firestore';
-import { CART_COLLECTION } from '../constants/collection.constants';
-import { ICart, ICartItem } from '../interface/cart.interface';
+import { USER_COLLECTION } from '../constants/collection.constants';
+import { ICartItem, IUser } from '../interface/user.interface';
 
 export const getCartItemByUserID = async (
   userID: string,
-): Promise<ICart | null> => {
+): Promise<ICartItem[] | null> => {
   try {
-    const docRef = await firestore().collection(CART_COLLECTION).doc(userID);
+    const docRef = await firestore().collection(USER_COLLECTION).doc(userID);
     const doc = await docRef.get();
 
     if (doc.exists) {
-      return doc.data() as ICart;
+      const userData = doc.data() as IUser;
+      const cartItems: ICartItem[] = userData.cart;
+
+      return cartItems;
     } else {
       console.log('this user has no cart!');
       return null;
