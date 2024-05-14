@@ -39,3 +39,10 @@ export const EXERCISE_NINE = 'ExerciseNine';
 export const EXERCISE_THREE = 'ExerciseThree';
 export const EXERCISE_FIVE = 'ExerciseFive';
 export const STATISTICS = 'Statistic';
+
+// Auth router
+export const OTP_SCREEN = 'OTPScreen';
+export const LOGIN_SCREEN = 'LoginScreen';
+export const REGISTER_SCREEN = 'RegisterScreen';
+export const CHANGE_PASSWORD = 'ChangePassword';
+export const FORGOT_PASSWORD = 'ForgotPassword';

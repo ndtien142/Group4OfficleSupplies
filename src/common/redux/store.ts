@@ -2,6 +2,10 @@ import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { reducer as rootConfigSliceReducer } from '@group4officesupplies/common/redux/rootConfigSlice';
+import { reducer as imagePickerReducer } from '@group4officesupplies/common/components/image-picker/imagePicker.slice';
+import { reducer as inputOtpCodeReducer } from '@group4officesupplies/auth/otp-input/inputOTP.slice';
+import { reducer as inputOtpStorageSlice } from '@group4officesupplies/auth/otp-input/slice.localstorage';
+import { reducer as loginReducer } from '@group4officesupplies/auth/login/login.slice';
 
 import {
   FLUSH,
@@ -22,6 +26,10 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   rootConfigSliceReducer,
+  imagePickerReducer,
+  inputOtpCodeReducer,
+  inputOtpStorageSlice,
+  loginReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

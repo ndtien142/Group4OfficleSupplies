@@ -16,7 +16,6 @@ import { QueryClient } from 'react-query';
 import { theme } from './src/common/theme/theme';
 import { store } from './src/common/redux/store';
 import { NativeBaseProvider } from 'native-base';
-import SplashScreen from 'react-native-splash-screen';
 
 export default function App() {
   useEffect(() => {
@@ -26,10 +25,6 @@ export default function App() {
   }, []);
 
   const queryClient = new QueryClient();
-
-  useEffect(() => {
-    SplashScreen.hide();
-  }, []);
 
   return (
     <NativeBaseProvider theme={theme}>
