@@ -1,9 +1,6 @@
 // 🚀 import Component from package
-import {
-  NativeStackScreenProps,
-  createNativeStackNavigator,
-} from '@react-navigation/native-stack';
-import React, { useEffect } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
 
 // 🚀 import Components from Pages
 import TabBottom from './TabBottom';
@@ -16,30 +13,29 @@ import {
   EXERCISE_SIX,
   EXERCISE_ONE,
   EXERCISE_NINE,
-  LOGIN,
   EXERCISE_THREE,
   EXERCISE_FIVE,
   STATISTICS,
   DETAIL_PRODUCT,
+  LOGIN_SCREEN,
+  OTP_SCREEN,
+  REGISTER_SCREEN,
 } from '../constants/route.constant'; // Assuming INTRO is also a route constant
-import { useNavigation } from '@react-navigation/native';
-import { useAppSelector } from '../hooks/useAppSelector';
-import { useAppDispatch } from '../hooks/useAppDispatch';
 import ProfileScreenContainer from '@group4officesupplies/profile/index';
 import HomeScreenContainer from '@group4officesupplies/home';
 import ExerciseSevenScreen from '@group4officesupplies/exercise/bai7';
 import ExerciseSixScreen from '@group4officesupplies/exercise/bai6';
 import App from '@group4officesupplies/exercise/bai1/App';
 import AppBai9 from '@group4officesupplies/exercise/bai9/AppBai9';
-import ExerciseNineScreen from '@group4officesupplies/exercise/bai9';
-import Login from '@group4officesupplies/home/components/Login';
-import Register from '@group4officesupplies/home/components/Register';
-import OTPScreen from '@group4officesupplies/home/components/OTPScreen';
 import ProductListScreen from '@group4officesupplies/home/components/ProductListScreen';
 import ExerciseThreeScreen from '@group4officesupplies/exercise/bai3';
 import ExerciseFiveScreen from '@group4officesupplies/exercise/bai5';
 import StatisticScreen from '@group4officesupplies/statistic';
 import DetailProductScreen from '@group4officesupplies/detail-product';
+import LoginContainerScreen from '@group4officesupplies/auth/login';
+import SplashLoading from '@group4officesupplies/splash-loading';
+import OTPContainerScreen from '@group4officesupplies/auth/otp-input';
+import RegisterContainerScreen from '@group4officesupplies/auth/register';
 
 // 🚀 import Constants from file Constants
 
@@ -54,14 +50,14 @@ export type RootStackParamList = {
   ExerciseSix: {};
   ExerciseOne: {};
   ExerciseNine: {};
-  Login: undefined;
-  Register: undefined;
-  OTPScreen: undefined;
+  LoginScreen: {};
+  OTPScreen: {};
   ProductList: {};
   DetailProduct: {};
   ExerciseThree: {};
   ExerciseFive: {};
   Statistic: {};
+  RegisterScreen: {};
 };
 
 // export type InputOTPProps = NativeStackScreenProps<
@@ -105,6 +101,11 @@ const RootStack = () => {
         headerShown: false,
       }}>
       <Stack.Screen
+        name={SPLASH_LOADING}
+        component={SplashLoading}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name={TAB_BOTTOM}
         component={TabBottom}
         options={{ headerShown: false, gestureEnabled: false }}
@@ -140,18 +141,18 @@ const RootStack = () => {
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="Login"
-        component={Login}
+        name={LOGIN_SCREEN}
+        component={LoginContainerScreen}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="Register"
-        component={Register}
+        name={REGISTER_SCREEN}
+        component={RegisterContainerScreen}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
-        name="OTPScreen"
-        component={OTPScreen}
+        name={OTP_SCREEN}
+        component={OTPContainerScreen}
         options={{ headerShown: false, gestureEnabled: false }}
       />
       <Stack.Screen
