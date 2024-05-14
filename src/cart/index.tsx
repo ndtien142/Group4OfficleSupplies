@@ -18,7 +18,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CartSkeleton from './components/CartSkeleton';
-import { useGetCart } from './hooks';
+// import { useGetCart } from './hooks/';
 
 // import { useGetDetailProduct } from './hooks/useGetDetailProduct';
 // import DetailProductSkeleton from './components/DetailProductSkeleton';
