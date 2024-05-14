@@ -40,6 +40,7 @@ import ExerciseThreeScreen from '@group4officesupplies/exercise/bai3';
 import ExerciseFiveScreen from '@group4officesupplies/exercise/bai5';
 import StatisticScreen from '@group4officesupplies/statistic';
 import DetailProductScreen from '@group4officesupplies/detail-product';
+import AddProduct from '@group4officesupplies/manager';
 
 // 🚀 import Constants from file Constants
 
@@ -62,6 +63,7 @@ export type RootStackParamList = {
   ExerciseThree: {};
   ExerciseFive: {};
   Statistic: {};
+  AddProduct: {};
 };
 
 // export type InputOTPProps = NativeStackScreenProps<
@@ -177,6 +179,11 @@ const RootStack = () => {
       <Stack.Screen
         name={DETAIL_PRODUCT}
         component={DetailProductScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={'AddProduct'}
+        component={AddProduct}
         options={{ headerShown: false, gestureEnabled: false }}
       />
     </Stack.Navigator>
