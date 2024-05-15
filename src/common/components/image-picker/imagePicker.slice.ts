@@ -18,7 +18,7 @@ const imagePickerSlice = createSlice({
     ) => {
       state.isOpenSelectMethodImagePicker = action.payload;
     },
-    setNewImage: (state, action: PayloadAction<IFileImagePicker>) => {
+    setNewImage: (state, action: PayloadAction<IFileImagePicker | {}>) => {
       state.imagePicker = action.payload;
     },
     setUserNumSubmit: (state, action: PayloadAction<number>) => {

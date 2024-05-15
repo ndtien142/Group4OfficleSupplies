@@ -32,6 +32,7 @@ import ExerciseThreeScreen from '@group4officesupplies/exercise/bai3';
 import ExerciseFiveScreen from '@group4officesupplies/exercise/bai5';
 import StatisticScreen from '@group4officesupplies/statistic';
 import DetailProductScreen from '@group4officesupplies/detail-product';
+import AddProduct from '@group4officesupplies/manager';
 import LoginContainerScreen from '@group4officesupplies/auth/login';
 import SplashLoading from '@group4officesupplies/splash-loading';
 import OTPContainerScreen from '@group4officesupplies/auth/otp-input';
@@ -58,6 +59,7 @@ export type RootStackParamList = {
   ExerciseThree: {};
   ExerciseFive: {};
   Statistic: {};
+  AddProduct: {};
   RegisterScreen: {};
 };
 
@@ -179,6 +181,11 @@ const RootStack = () => {
       <Stack.Screen
         name={DETAIL_PRODUCT}
         component={DetailProductScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={'AddProduct'}
+        component={AddProduct}
         options={{ headerShown: false, gestureEnabled: false }}
       />
     </Stack.Navigator>
