@@ -26,6 +26,7 @@ import { useTranslation } from 'react-i18next';
 import ExerciseContainer from '@group4officesupplies/exercise';
 import ManagerContainer from '@group4officesupplies/manager';
 import StatisticScreen from '@group4officesupplies/statistic';
+import ManageListProductContainer from '@group4officesupplies/manager/list';
 
 const Tab = createBottomTabNavigator();
 
@@ -151,7 +152,7 @@ const TabBottom = () => {
         }}></Tab.Screen>
       <Tab.Screen
         name={BOTTOM_TAB_MANAGER}
-        component={ManagerContainer}
+        component={ManageListProductContainer}
         options={{
           tabBarIcon: ({ size, color }) => (
             <TouchableOpacity
