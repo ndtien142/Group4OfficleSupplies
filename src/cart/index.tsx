@@ -11,7 +11,7 @@ import {
   Text,
   VStack,
 } from 'native-base';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -19,6 +19,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CartSkeleton from './components/CartSkeleton';
 import { useGetCart } from './hooks/useGetCart';
+import { useGetDetailProduct } from '@group4officesupplies/detail-product/hooks/useGetDetailProduct';
+import { IProduct } from '@group4officesupplies/common/interface/product.interface';
+import { getProductById } from '@group4officesupplies/common/services/product.service';
+import QuantityControl from './components/QuantityControl';
+import { getCartItemByUserID } from '@group4officesupplies/common/services/cart.service';
 // import { useGetCart } from './hooks/';
 
 // import { useGetDetailProduct } from './hooks/useGetDetailProduct';
@@ -56,10 +61,99 @@ const CartScreenContainer = () => {
     : 'LsjNM7U2G0OWLGaKtTuziX6MCls1';
   const navigation = useNavigation();
   const { data: cart, isLoading } = useGetCart(id as string);
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [checkedItems, setCheckedItems] = useState<
+    { id: string; isChecked: boolean; quantity: number }[]
+  >([]);
+  // const [quantity, setQuantity] = useState({});
+
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const calculateTotalPrice = () => {
+    let total = 0;
+    checkedItems.forEach(checkedItem => {
+      if (checkedItem.isChecked) {
+        const product = products.find(product => product.id === checkedItem.id);
+        if (product) {
+          console.log(product.id);
+          total += product.price * checkedItem.quantity;
+        }
+      }
+    });
+    setTotalPrice(total);
+    console.log(total);
+    return total;
+  };
+
+  const handleCheckboxChange = async (productId: string) => {
+    console.log('changeds' + productId);
+    const newCart = await getCartItemByUserID(id);
+    setCheckedItems(prevState => {
+      const updatedCheckedItems = prevState.map(item => {
+        if (item.id === productId) {
+          return {
+            ...item,
+            isChecked: !item.isChecked,
+            quantity:
+              newCart?.find(cartItem => cartItem.productID === item.id)
+                ?.quantity || 0,
+          };
+        }
+        return item;
+      });
+      return updatedCheckedItems;
+    });
+  };
+
+  // Function to handle quantity change
+  // const handleQuantityChange = (productId: any, newQuantity: any) => {
+  //   setQuantity((prevQuantity: any) => ({
+  //     ...prevQuantity,
+  //     [productId]: newQuantity,
+  //   }));
+  // };
+
+  // Function to handle payment
+  const handlePayment = async () => {
+    for (const productId in checkedItems) {
+      console.log(productId);
+    }
+  };
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (cart && cart.length > 0) {
+        const productPromises = cart.map(async item => {
+          const product = await getProductById(item.productID);
+          return product;
+        });
+        const resolvedProducts = await Promise.all(productPromises);
+        setProducts(
+          resolvedProducts.filter(
+            (product): product is IProduct =>
+              product !== null && product !== undefined,
+          ),
+        ); // Lọc ra các sản phẩm không phải null hoặc undefined
+      }
+      const newCheckedItems = products.map(product => ({
+        id: product.id,
+        isChecked: false, // Khởi tạo isChecked cho mỗi sản phẩm là false
+        quantity:
+          cart?.find(item => item.productID === product.id)?.quantity || 0,
+      }));
+      setCheckedItems(newCheckedItems); // Cập nhật checkedItems
+    };
+
+    fetchProducts();
+  }, [cart]);
+
+  useEffect(() => {
+    setTotalPrice(calculateTotalPrice());
+  }, [checkedItems]);
 
   return (
     <SafeAreaView>
-      {cart && cart.length > 0 ? (
+      {/* {cart && cart.length > 0 ? (
         cart.map((item, index) => (
           <View key={index}>
             <Text color={'#000'}>
@@ -69,9 +163,9 @@ const CartScreenContainer = () => {
         ))
       ) : (
         <Text>No items in cart.</Text>
-      )}
+      )} */}
       {/* Header */}
-      <Text color={'#000'}> he he{id}</Text>
+
       <Stack
         height={'100%'}
         alignItems={'center'}
@@ -81,7 +175,8 @@ const CartScreenContainer = () => {
           backgroundColor={'white'}
           position={'absolute'}
           flexDirection={'row'}
-          alignItems={'center'}>
+          alignItems={'center'}
+          zIndex={10}>
           <TouchableOpacity
             style={{ padding: 16 }}
             onPress={() => {
@@ -98,17 +193,31 @@ const CartScreenContainer = () => {
         {/* Content */}
         <ScrollView style={{ marginTop: -50, marginBottom: 50 }} zIndex={-10}>
           <Stack padding={'100px'} space={'10px'}>
-            {[1, 2, 3, 4, 5, 6].map(index => (
-              <Stack margin={'20px'}>
+            {products.map((product, index) => (
+              <Stack key={index} margin={'20px'}>
                 <Box
-                  key={index}
                   flexDirection="row"
                   alignItems="center"
                   marginLeft={'-100px'}>
-                  <Checkbox isChecked={false} value={''} margin={'10px'} />
+                  <Checkbox
+                    key={'checkbox#' + index}
+                    isChecked={
+                      checkedItems.find(
+                        checkedItem => checkedItem.id === product.id,
+                      )?.isChecked || false
+                    }
+                    onChange={() => {
+                      handleCheckboxChange(product.id);
+                      setTotalPrice(calculateTotalPrice());
+                      console.log('id is' + product.id);
+                    }}
+                    margin={'10px'}
+                    value={''}
+                    aria-label="Chọn"
+                  />
                   <Image
                     source={{
-                      uri: 'https://bizweb.dktcdn.net/thumb/grande/100/426/039/products/8c9b9e2bff5ba163d1755ae09597c3.jpg?v=1657127733457',
+                      uri: product?.image, // Sử dụng link hình ảnh từ sản phẩm
                     }}
                     width={'80px'}
                     height={'80px'}
@@ -121,11 +230,20 @@ const CartScreenContainer = () => {
                     height={'80px'}
                     marginLeft={'20px'}
                     justifyContent={'space-between'}>
-                    <HStack>
-                      <Text color={'#000'}>Tên sản phẩm</Text>
+                    <HStack width={'300px'}>
+                      <Text color={'#000'}>{product.title}</Text>{' '}
+                      {/* Hiển thị tên sản phẩm */}
                     </HStack>
                     <HStack>
-                      <Text color={'#000'}>Số lượng:</Text>
+                      <Text color={'#000'}>Số lượng: </Text>{' '}
+                      <QuantityControl
+                        userID={'LsjNM7U2G0OWLGaKtTuziX6MCls1'}
+                        productID={product.id}
+                        quantity={
+                          cart?.find(item => item.productID === product.id)
+                            ?.quantity || 0
+                        }
+                      />
                     </HStack>
                   </Box>
                 </Box>
@@ -167,7 +285,7 @@ const CartScreenContainer = () => {
               fontWeight="bold"
               marginLeft={'60px'}
               marginRight={'10px'}>
-              Tổng tiền: $100
+              Tổng tiền: {totalPrice}
             </Text>
             <Button
               // marginLeft={'90px'}

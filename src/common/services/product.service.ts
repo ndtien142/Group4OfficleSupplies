@@ -27,7 +27,9 @@ export const getProductById = async (
     const doc = await docRef.get();
 
     if (doc.exists) {
-      return doc.data() as IProduct;
+      var result = doc.data() as IProduct;
+      result.id = productId;
+      return result;
     } else {
       console.log('No such product!');
       return null;
