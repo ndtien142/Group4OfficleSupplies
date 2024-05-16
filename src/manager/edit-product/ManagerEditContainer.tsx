@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import {
-  View,
-  TextInput,
-  Button,
-  StyleSheet,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
+import { TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { getProductById } from '@group4officesupplies/common/services/product.service';
 import { IProduct } from '@group4officesupplies/common/interface/product.interface'; // Import IProduct interface
 import { editProduct } from '../manager.service';
@@ -33,7 +25,9 @@ const ManagerEditContainer = () => {
     if (productId) {
       const fetchProduct = async () => {
         try {
-          const productData = await getProductById(productId);
+          const productData = await getProductById(
+            productId.trim().replace(/['"]+/g, ''),
+          );
           if (productData) {
             setProduct(productData);
             setTitle(productData.title);

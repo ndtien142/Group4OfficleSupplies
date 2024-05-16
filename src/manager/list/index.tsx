@@ -84,11 +84,11 @@ const ManageListProductContainer = () => {
                     <Button
                       variant={'ghost'}
                       startIcon={<AntDesign name="edit" size={20} />}
-                      onPress={() =>
+                      onPress={() => {
                         navigation.navigate(MANAGER_EDIT_PRODUCT, {
                           productId: product.id,
-                        })
-                      }
+                        });
+                      }}
                     />
                     <Button onPress={() => handleHideProduct(product.id)}>
                       Ẩn

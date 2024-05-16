@@ -8,10 +8,15 @@ import { IProduct, IProductPromotional } from '../interface/product.interface';
 export const getProducts = async (): Promise<IProduct[]> => {
   try {
     const snapshot = await firestore().collection(PRODUCT_COLLECTION).get();
-
     // Map over the documents and return the data
     return snapshot.docs.map(doc => {
-      return { id: doc.id, ...doc.data() } as IProduct;
+      return {
+        ...doc.data(),
+        id: doc.ref.path
+          .replace(`${PRODUCT_COLLECTION}/`, '')
+          .trim()
+          .replace(/['"]+/g, ''),
+      } as IProduct;
     });
   } catch (error) {
     console.error('Error getting products: ', error);
@@ -23,7 +28,9 @@ export const getProductById = async (
   productId: string,
 ): Promise<IProduct | null> => {
   try {
-    const docRef = firestore().collection(PRODUCT_COLLECTION).doc(productId);
+    const docRef = firestore()
+      .collection(PRODUCT_COLLECTION)
+      .doc(productId.trim().replace(/['"]+/g, ''));
     const doc = await docRef.get();
 
     if (doc.exists) {
