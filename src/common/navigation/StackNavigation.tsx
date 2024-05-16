@@ -3,7 +3,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import ProfileScreenContainer from '@group4officesupplies/profile';
 import HomeScreenContainer from '@group4officesupplies/home';
 import OrderScreenContainer from '@group4officesupplies/order';
-import { HOME, LOGIN, CART, LOGIN_SCREEN } from '../constants/route.constant';
+import {
+  HOME,
+  LOGIN,
+  CART,
+  LOGIN_SCREEN,
+  ORDER,
+} from '../constants/route.constant';
 import Login from '@group4officesupplies/home/components/Login';
 import CartScreenContainer from '@group4officesupplies/cart';
 import { LocalStorageKey } from '../constants/common.constants';

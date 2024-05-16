@@ -16,7 +16,6 @@ export interface IOrder {
   date: string;
   productID: string;
   image: string;
-  orderID: string;
   price: number;
   quantity: number;
   title: string;

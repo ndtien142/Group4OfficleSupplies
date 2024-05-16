@@ -24,6 +24,7 @@ import { IProduct } from '@group4officesupplies/common/interface/product.interfa
 import { getProductById } from '@group4officesupplies/common/services/product.service';
 import QuantityControl from './components/QuantityControl';
 import { getCartItemByUserID } from '@group4officesupplies/common/services/cart.service';
+import { useAppSelector } from '@group4officesupplies/common/hooks/useAppSelector';
 // import { useGetCart } from './hooks/';
 
 // import { useGetDetailProduct } from './hooks/useGetDetailProduct';
@@ -54,13 +55,11 @@ const CartScreenContainer = () => {
   const router = useRoute();
   const widthScreen = Dimensions.get('screen').width;
   const [qty, setQty] = useState(1);
+  const { userId } = useAppSelector(state => state.rootConfigSliceReducer);
+  const userID = userId.trim().replace(/['"]+/g, '');
 
-  // @ts-ignore
-  const id = router?.params?.userID
-    ? 'LsjNM7U2G0OWLGaKtTuziX6MCls1'
-    : 'LsjNM7U2G0OWLGaKtTuziX6MCls1';
   const navigation = useNavigation();
-  const { data: cart, isLoading } = useGetCart(id as string);
+  const { data: cart, isLoading } = useGetCart(userID as string);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [checkedItems, setCheckedItems] = useState<
     { id: string; isChecked: boolean; quantity: number }[]
@@ -87,7 +86,7 @@ const CartScreenContainer = () => {
 
   const handleCheckboxChange = async (productId: string) => {
     console.log('changeds' + productId);
-    const newCart = await getCartItemByUserID(id);
+    const newCart = await getCartItemByUserID(userID);
     setCheckedItems(prevState => {
       const updatedCheckedItems = prevState.map(item => {
         if (item.id === productId) {
@@ -128,24 +127,27 @@ const CartScreenContainer = () => {
           return product;
         });
         const resolvedProducts = await Promise.all(productPromises);
-        setProducts(
-          resolvedProducts.filter(
-            (product): product is IProduct =>
-              product !== null && product !== undefined,
-          ),
-        ); // Lọc ra các sản phẩm không phải null hoặc undefined
+        const validProducts = resolvedProducts.filter(
+          (product): product is IProduct =>
+            product !== null && product !== undefined,
+        );
+        setProducts(validProducts); // Cập nhật products
+
+        const newCheckedItems = validProducts.map(product => ({
+          id: product.id,
+          isChecked: false, // Khởi tạo isChecked cho mỗi sản phẩm là false
+          quantity:
+            cart?.find(item => item.productID === product.id)?.quantity || 0,
+        }));
+        setCheckedItems(newCheckedItems); // Cập nhật checkedItems
+      } else {
+        setProducts([]);
+        setCheckedItems([]);
       }
-      const newCheckedItems = products.map(product => ({
-        id: product.id,
-        isChecked: false, // Khởi tạo isChecked cho mỗi sản phẩm là false
-        quantity:
-          cart?.find(item => item.productID === product.id)?.quantity || 0,
-      }));
-      setCheckedItems(newCheckedItems); // Cập nhật checkedItems
     };
 
     fetchProducts();
-  }, []);
+  }, [cart]); // Thêm cart vào mảng dependency
 
   useEffect(() => {
     setTotalPrice(calculateTotalPrice());
@@ -237,7 +239,7 @@ const CartScreenContainer = () => {
                     <HStack>
                       <Text color={'#000'}>Số lượng: </Text>{' '}
                       <QuantityControl
-                        userID={'LsjNM7U2G0OWLGaKtTuziX6MCls1'}
+                        userID={userID}
                         productID={product.id}
                         quantity={
                           cart?.find(item => item.productID === product.id)
@@ -317,3 +319,6 @@ const CartScreenContainer = () => {
 };
 
 export default CartScreenContainer;
+function firestore() {
+  throw new Error('Function not implemented.');
+}

@@ -21,18 +21,15 @@ import { useGetDetailProduct } from '@group4officesupplies/detail-product/hooks/
 import { IProduct } from '@group4officesupplies/common/interface/product.interface';
 import { getProductById } from '@group4officesupplies/common/services/product.service';
 import { useGetOrder } from './hooks/useGetOrder';
+import { useAppSelector } from '@group4officesupplies/common/hooks/useAppSelector';
 
 const OrderScreenContainer = () => {
   const router = useRoute();
   const widthScreen = Dimensions.get('screen').width;
-
-  // @ts-ignore
-  const id = router?.params?.userID
-    ? 'LsjNM7U2G0OWLGaKtTuziX6MCls1'
-    : 'LsjNM7U2G0OWLGaKtTuziX6MCls1';
+  const { userId } = useAppSelector(state => state.rootConfigSliceReducer);
+  const userID = userId.trim().replace(/['"]+/g, '');
   const navigation = useNavigation();
-  const { data: orders, isLoading } = useGetOrder(id as string);
-  const [products, setProducts] = useState<IProduct[]>([]);
+  const { data: orders, isLoading } = useGetOrder(userID as string);
 
   return (
     <SafeAreaView>
