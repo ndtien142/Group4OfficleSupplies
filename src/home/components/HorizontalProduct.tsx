@@ -22,6 +22,7 @@ const HorizontalProduct = ({
   const [showAllProducts, setShowAllProducts] = useState(false);
 
   const handleProductPress = (item: IProduct) => {
+    // @ts-ignore
     navigation.navigate(DETAIL_PRODUCT as never, { productId: item?.id });
   };
 

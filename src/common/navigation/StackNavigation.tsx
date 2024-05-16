@@ -2,8 +2,10 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import ProfileScreenContainer from '@group4officesupplies/profile';
 import HomeScreenContainer from '@group4officesupplies/home';
-import { HOME, LOGIN } from '../constants/route.constant';
+import { HOME, LOGIN, CART } from '../constants/route.constant';
 import Login from '@group4officesupplies/home/components/Login';
+import CartScreenContainer from '@group4officesupplies/cart';
+
 // import HomeScreen from '../screen/HomeScreen';
 // import DetailScreen from '../screen/DetailScreen';
 // import ProductListScreen from '../screen/ProductListScreen';
@@ -31,7 +33,7 @@ const MainStackNavigator: React.FC = () => {
 const CartStackNavigator: React.FC = () => {
   return (
     <Stack.Navigator
-      initialRouteName="cart-screen"
+      initialRouteName="order-screen"
       screenOptions={{
         headerStyle: {
           backgroundColor: '#91c4f8',
@@ -39,8 +41,8 @@ const CartStackNavigator: React.FC = () => {
         headerShown: false,
       }}>
       <Stack.Screen
-        name="cart-screen"
-        component={ProfileScreenContainer}></Stack.Screen>
+        name="order-screen"
+        component={CartScreenContainer}></Stack.Screen>
     </Stack.Navigator>
   );
 };

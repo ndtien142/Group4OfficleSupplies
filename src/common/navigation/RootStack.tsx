@@ -44,6 +44,7 @@ export type RootStackParamList = {
   SplashLoading: {};
   Intro: { navigation: any };
   Auth: {}; // Define Auth route type
+  Cart: {};
   Profile: {};
   TabBottom: {};
   Home: {};

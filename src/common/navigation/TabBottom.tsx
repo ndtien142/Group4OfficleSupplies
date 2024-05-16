@@ -26,11 +26,38 @@ import { useTranslation } from 'react-i18next';
 import ExerciseContainer from '@group4officesupplies/exercise';
 import ManagerContainer from '@group4officesupplies/manager';
 import StatisticScreen from '@group4officesupplies/statistic';
+
+import { ICartItem } from '../interface/cart.interface';
+import { IUser } from '../interface/user.interface';
 import ManageListProductContainer from '@group4officesupplies/manager/list';
+
 
 const Tab = createBottomTabNavigator();
 
 const TabBottom = () => {
+  const formData = [
+    { productID: 'MR2Qbqma9TExxNxr644Z', quantity: 2 },
+    { productID: 'dwNota47sb4zMCcGU7Ep', quantity: 5 },
+  ];
+
+  const myCartItems: ICartItem[] = formData.map(item => ({
+    productID: item.productID,
+    quantity: item.quantity,
+  }));
+
+  const myUser: IUser = {
+    id: 'LsjNM7U2G0OWLGaKtTuziX6MCls1',
+    email: 'vinhdev@test.com',
+    name: 'vinhdev',
+    cart: myCartItems,
+  };
+
+  const handleCartTabPress = (user: IUser) => {
+    // @ts-ignore
+    navigation.navigate(BOTTOM_TAB_CART as never, { userID: user?.id });
+    console.log('hello' + user.id);
+  };
+
   const navigation = useNavigation();
   const { t } = useTranslation();
   return (
@@ -90,7 +117,7 @@ const TabBottom = () => {
           tabBarIcon: ({ size, color }) => (
             <TouchableOpacity
               style={{ width: '100%' }}
-              onPress={() => navigation.navigate(BOTTOM_TAB_CART as never)}>
+              onPress={() => handleCartTabPress(myUser)}>
               <Flex alignItems={'center'} justifyContent={'center'}>
                 <MaterialCommunityIcons name="cart" size={size} color={color} />
                 <Text
