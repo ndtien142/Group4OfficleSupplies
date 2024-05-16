@@ -5,6 +5,7 @@ export interface IUploadProduct {
   image: string;
   price: number;
   title: string;
+  status:string;
 }
 export interface IEditedProduct {
   id: string;
@@ -13,6 +14,7 @@ export interface IEditedProduct {
   image: string;
   price: number;
   title: string;
+  status:string;
 }
 export interface IDeletedProduct {
   id: string;
@@ -21,4 +23,5 @@ export interface IDeletedProduct {
   image: string;
   price: number;
   title: string;
+  status:string;
 }
