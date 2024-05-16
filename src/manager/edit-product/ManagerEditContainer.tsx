@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { View, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
-import { editProduct } from './manager.service';
+import {
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 import { getProductById } from '@group4officesupplies/common/services/product.service';
 import { IProduct } from '@group4officesupplies/common/interface/product.interface'; // Import IProduct interface
+import { editProduct } from '../manager.service';
+import ManagerHeader from '../components/ManagerHeader';
+import { Box, Image, ScrollView, Stack, TextArea } from 'native-base';
 
 const ManagerEditContainer = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  // @ts-ignore
   const { productId } = route.params;
   const [product, setProduct] = useState<IProduct | null>(null); // Specify type as IProduct
   const [title, setTitle] = useState('');
@@ -19,7 +29,7 @@ const ManagerEditContainer = () => {
   const [image, setImage] = useState('');
 
   useEffect(() => {
-    console.log("productId:", productId);
+    console.log('productId:', productId);
     if (productId) {
       const fetchProduct = async () => {
         try {
@@ -51,7 +61,15 @@ const ManagerEditContainer = () => {
 
   const handleSave = async () => {
     try {
-      await editProduct(productId, { id:'',title, brand, description, price: parseFloat(price), image,status:'' });
+      await editProduct(productId, {
+        id: '',
+        title,
+        brand,
+        description,
+        price: parseFloat(price),
+        image,
+        status: '',
+      });
       Alert.alert('Success', 'Product updated successfully');
       navigation.goBack();
     } catch (error) {
@@ -65,45 +83,49 @@ const ManagerEditContainer = () => {
   }
 
   return (
-    <SafeAreaProvider>
-      <View style={styles.container}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <AntDesign name="arrowleft" size={30} color="black" />
-        </TouchableOpacity>
-        <TextInput
-          style={styles.input}
-          placeholder="Title"
-          value={title}
-          onChangeText={setTitle}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Brand"
-          value={brand}
-          onChangeText={setBrand}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Description"
-          value={description}
-          onChangeText={setDescription}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Price"
-          value={price}
-          onChangeText={setPrice}
-          keyboardType="numeric"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Image URL"
-          value={image}
-          onChangeText={setImage}
-        />
+    <SafeAreaView>
+      <Box px={'16px'} mt={10}>
+        <ManagerHeader title="Chỉnh sửa sản phẩm" />
+      </Box>
+      <ScrollView padding={'16px'}>
+        <Stack width={'100%'} mb={20} space={5}>
+          <TextInput
+            style={styles.input}
+            placeholder="Tên sản phẩm"
+            value={title}
+            onChangeText={setTitle}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Nhãn"
+            value={brand}
+            onChangeText={setBrand}
+          />
+          <TextArea
+            placeholder="Mô tả"
+            value={description}
+            onChangeText={setDescription}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Giá"
+            value={price}
+            onChangeText={setPrice}
+            keyboardType="numeric"
+          />
+          {/* <TextInput
+            style={styles.input}
+            placeholder="Image URL"
+            value={image}
+            onChangeText={setImage}
+          /> */}
+          {image && (
+            <Image key={image} source={{ uri: image }} alt="image product" />
+          )}
+        </Stack>
         <Button title="Save" onPress={handleSave} />
-      </View>
-    </SafeAreaProvider>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
