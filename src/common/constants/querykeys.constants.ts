@@ -1,6 +1,9 @@
+import { ORDER } from './route.constant';
+
 export const QUERY_KEYS = Object.freeze({
   NORMAL_PRODUCT: 'NORMAL_PRODUCT',
   PROMOTION_PRODUCT: 'PROMOTION_PRODUCT',
   DETAIL_PRODUCT: 'DETAIL_PRODUCT',
   CART: 'CART',
+  ORDER: 'ORDER',
 });
