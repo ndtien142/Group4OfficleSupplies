@@ -145,7 +145,7 @@ const CartScreenContainer = () => {
     };
 
     fetchProducts();
-  }, [cart]);
+  }, []);
 
   useEffect(() => {
     setTotalPrice(calculateTotalPrice());
