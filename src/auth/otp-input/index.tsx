@@ -15,6 +15,9 @@ import {
 import { resetOtpState } from './inputOTP.slice';
 import { resetFormState } from '../login/login.slice';
 import { useAppDispatch } from '@group4officesupplies/common/hooks/useAppDispatch';
+import { saveToAsyncStorage } from '@group4officesupplies/common/utils/utils.common';
+import { LocalStorageKey } from '@group4officesupplies/common/constants/common.constants';
+import { setUserId } from '@group4officesupplies/common/redux/rootConfigSlice';
 
 const OTPContainerScreen = () => {
   const navigation = useNavigation();
@@ -54,12 +57,15 @@ const OTPContainerScreen = () => {
         .get();
       if (userDocument.exists) {
         // if user existing then navigate to bottom bar
+        saveToAsyncStorage(LocalStorageKey.USER_ID, user?.uid);
+        dispatch(setUserId(user?.uid || ''));
         navigation.reset({
           index: 0,
           routes: [{ name: TAB_BOTTOM }],
         });
       } else {
         // if user new then navigate to register screen
+        saveToAsyncStorage(LocalStorageKey.USER_ID, user?.uid);
         // @ts-ignore
         navigation.navigate(REGISTER_SCREEN, { uid: user.uid });
       }

@@ -1,28 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { View, Text, Button, ScrollView, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, Button, ScrollView, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { useNavigation } from '@react-navigation/native';
-import { deleteProduct } from '../manager.service';
+import { useNavigation, useIsFocused } from '@react-navigation/native';  // Import useIsFocused
 import { getProducts } from '@group4officesupplies/common/services/product.service';
-
-interface IProduct {
-  id: string;
-  name: string;
-  type: string;
-  price: number;
-  quantity: number;
-  images: string[];
-}
+import { deleteProduct } from '../manager.service';
+import { IProduct } from '@group4officesupplies/common/interface/product.interface';
+import { IUploadProduct } from '../manage.interface';
 
 const ManageListProductContainer = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused(); 
   const [products, setProducts] = useState<IProduct[]>([]);
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
-  
+    if (isFocused) {  
+      fetchProducts();
+    }
+  }, [isFocused]); 
+
   const fetchProducts = async () => {
     try {
       const productList = await getProducts();
@@ -32,16 +28,36 @@ const ManageListProductContainer = () => {
     }
   };
 
-  const handleDeleteProduct = async (productId: string) => {
-    try {
-      await deleteProduct(productId);
-      setProducts(products.filter(product => product.id !== productId));
-      Alert.alert('Success', 'Product deleted successfully');
-    } catch (error) {
-      console.error('Error deleting product:', error);
-      Alert.alert('Error', 'Failed to delete product');
+  const handleEditProduct = async (productId) => {
+    const product = products.find(item => item.id === productId);
+    if(product) {
+      navigation.navigate('ManagerEditContainer', { productId });
+    } else {
+      Alert.alert('Error', 'Product not found');
     }
   };
+  
+  const handleHideProduct = async (productId) => {
+    const product = products.find(item => item.id === productId);
+    if(product) {
+      try {
+        await deleteProduct(productId);
+        setProducts(prevProducts => prevProducts.map(item => {
+          if (item.id === productId) {
+            return {...item, status: 'inactive'};
+          }
+          return item;
+        }));
+        Alert.alert('Success', 'Product hidden successfully');
+      } catch (error) {
+        console.error('Error hiding product:', error);
+        Alert.alert('Error', 'Failed to hide product');
+      }
+    } else {
+      Alert.alert('Error', 'Product not found');
+    }
+  };
+  
 
   return (
     <SafeAreaProvider>
@@ -51,26 +67,29 @@ const ManageListProductContainer = () => {
           <AntDesign name="pluscircle" size={30} color="blue" />
         </TouchableOpacity>
         <ScrollView>
-          {products.map((product) => (
-            <View key={product.id} style={styles.productContainer}>
-              <View style={styles.productInfo}>
-                <Text style={styles.productName}>{product.name}</Text>
-                <Text>Type: {product.type}</Text>
-                <Text>Price: {product.price}</Text>
-                <Text>Quantity: {product.quantity}</Text>
+          {products.map(product => 
+            product.status === 'active' && (
+              <View key={product.id} style={styles.productContainer}>
+                <Image source={{ uri: product.image }} style={styles.productImage} />
+                <View style={styles.productInfo}>
+                  <Text style={styles.productName}>{product.title}</Text>
+                  <Text>Brand: {product.brand}</Text>
+                  <Text>Description: {product.description}</Text>
+                  <Text>Price: {product.price}</Text>
+                </View>
+                <View style={styles.actionButtons}>
+                  <Button
+                    title="Edit"
+                    onPress={() => navigation.navigate('ManagerEditContainer', { productId: product.id })}
+                  />
+                  <Button
+                    title="Hide"
+                    onPress={() => handleHideProduct(product.id)}
+                  />
+                </View>
               </View>
-              <View style={styles.actionButtons}>
-                <Button
-                  title="Edit"
-                  onPress={() => navigation.navigate('EditProduct', { productId: product.id })}
-                />
-                <Button
-                  title="Delete"
-                  onPress={() => handleDeleteProduct(product.id)}
-                />
-              </View>
-            </View>
-          ))}
+            )
+          )}
         </ScrollView>
       </View>
     </SafeAreaProvider>
@@ -105,6 +124,7 @@ const styles = StyleSheet.create({
   },
   productInfo: {
     flex: 3,
+    marginLeft: 10,
   },
   productName: {
     fontWeight: 'bold',
@@ -113,6 +133,10 @@ const styles = StyleSheet.create({
   actionButtons: {
     flex: 1,
     justifyContent: 'space-between',
+  },
+  productImage: {
+    width: 100,
+    height: 100,
   },
 });
 

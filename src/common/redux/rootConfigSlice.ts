@@ -7,6 +7,7 @@ interface IInitialState {
   isRegisterFirstDownload: boolean;
   isLoginAfterLogout: boolean;
   deviceTokens: string[];
+  userId: string;
 }
 
 const initialState: IInitialState = {
@@ -17,6 +18,7 @@ const initialState: IInitialState = {
   isRegisterFirstDownload: false,
   isLoginAfterLogout: false,
   deviceTokens: [],
+  userId: '',
 };
 
 const rootConfigSlice = createSlice({
@@ -41,6 +43,9 @@ const rootConfigSlice = createSlice({
     resetDeviceTokens: state => {
       state.deviceTokens = [];
     },
+    setUserId: (state, action: PayloadAction<string>) => {
+      state.userId = action.payload;
+    },
   },
 });
 export const {
@@ -51,6 +56,7 @@ export const {
     setIsRegisterFirstDownload,
     setIsLoginAfterLogout,
     resetDeviceTokens,
+    setUserId,
   },
   reducer,
 } = rootConfigSlice;

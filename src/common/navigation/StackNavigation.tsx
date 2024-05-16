@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import ProfileScreenContainer from '@group4officesupplies/profile';
 import HomeScreenContainer from '@group4officesupplies/home';
-import { HOME, LOGIN, CART, ORDER } from '../constants/route.constant';
+import OrderScreenContainer from '@group4officesupplies/order';
+import { HOME, LOGIN, CART, LOGIN_SCREEN } from '../constants/route.constant';
 import Login from '@group4officesupplies/home/components/Login';
 import CartScreenContainer from '@group4officesupplies/cart';
-import OrderScreenContainer from '@group4officesupplies/order';
+import { LocalStorageKey } from '../constants/common.constants';
+import { getFromAsyncStorage } from '../utils/utils.common';
+import { useNavigation } from '@react-navigation/native';
 
 // import HomeScreen from '../screen/HomeScreen';
 // import DetailScreen from '../screen/DetailScreen';
@@ -64,6 +67,19 @@ const OrderStackNavigator: React.FC = () => {
 };
 
 const ProfileStackNavigator: React.FC = () => {
+  const navigation = useNavigation();
+  useEffect(() => {
+    const getUserId = async () => {
+      const userId = await getFromAsyncStorage(LocalStorageKey.USER_ID);
+      if (!userId) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: LOGIN_SCREEN }],
+        });
+      }
+    };
+    getUserId();
+  }, []);
   return (
     <Stack.Navigator
       screenOptions={{

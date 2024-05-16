@@ -1,9 +1,11 @@
+import { LocalStorageKey } from '@group4officesupplies/common/constants/common.constants';
 import { imageLogo } from '@group4officesupplies/common/constants/imagePath';
 import {
   LOGIN_SCREEN,
   TAB_BOTTOM,
 } from '@group4officesupplies/common/constants/route.constant';
 import { useAppDispatch } from '@group4officesupplies/common/hooks/useAppDispatch';
+import { setUserId } from '@group4officesupplies/common/redux/rootConfigSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { Box, Image, Spinner, Stack, Text } from 'native-base';
@@ -19,8 +21,12 @@ const SplashLoading = () => {
 
   const getData = async () => {
     try {
-      const valueToken = await AsyncStorage.getItem('token_App');
-      if (valueToken) {
+      const userId = await AsyncStorage.getItem(LocalStorageKey.USER_ID);
+      if (userId) {
+        console.log('user id from local storage', userId);
+        dispatch(setUserId(userId));
+        // @ts-ignore
+        navigator.navigate(TAB_BOTTOM, {});
       } else {
         // @ts-ignore
         navigator.navigate(initialRoute, {});

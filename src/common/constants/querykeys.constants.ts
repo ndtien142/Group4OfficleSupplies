@@ -6,4 +6,5 @@ export const QUERY_KEYS = Object.freeze({
   DETAIL_PRODUCT: 'DETAIL_PRODUCT',
   CART: 'CART',
   ORDER: 'ORDER',
+  USER_PROFILE: 'USER_PROFILE',
 });

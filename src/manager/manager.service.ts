@@ -14,10 +14,10 @@ export const uploadProduct = async (product: IUploadProduct): Promise<void> => {
 
 export const deleteProduct = async (productId: string): Promise<void> => {
   try {
-    await firestore().collection(PRODUCT_COLLECTION).doc(productId).delete();
-    console.log('Product deleted successfully');
+    await firestore().collection(PRODUCT_COLLECTION).doc(productId).update({ status: 'inactive' });
+    console.log('Product hidden successfully');
   } catch (error) {
-    console.error('Error deleting product: ', error);
+    console.error('Error hiding product: ', error);
     throw error;
   }
 };

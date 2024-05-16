@@ -37,6 +37,7 @@ import LoginContainerScreen from '@group4officesupplies/auth/login';
 import SplashLoading from '@group4officesupplies/splash-loading';
 import OTPContainerScreen from '@group4officesupplies/auth/otp-input';
 import RegisterContainerScreen from '@group4officesupplies/auth/register';
+import ManagerEditContainer from '@group4officesupplies/manager/edit';
 
 // 🚀 import Constants from file Constants
 
@@ -186,6 +187,11 @@ const RootStack = () => {
       <Stack.Screen
         name={'AddProduct'}
         component={AddProduct}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={'ManagerEditContainer'}
+        component={ManagerEditContainer}
         options={{ headerShown: false, gestureEnabled: false }}
       />
     </Stack.Navigator>

@@ -1,108 +1,111 @@
-import React, { useContext } from 'react';
-import { Text, View, Image, ToastAndroid, StyleSheet } from 'react-native';
+import { ImagePath } from '@group4officesupplies/common/constants/imagePath';
+import { Box, Heading, ScrollView, Stack } from 'native-base';
+import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ProfileHeader from './components/ProfileHeader';
+import ProfileTabBottom from './components/ProfileTabBottom';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { LOGIN_SCREEN } from '@group4officesupplies/common/constants/route.constant';
+import auth from '@react-native-firebase/auth';
+import { useGetProfile } from './hooks/useGetProfile';
+import { removeFromAsyncStorage } from '@group4officesupplies/common/utils/utils.common';
+import { LocalStorageKey } from '@group4officesupplies/common/constants/common.constants';
+import { useAppDispatch } from '@group4officesupplies/common/hooks/useAppDispatch';
+import { useAppSelector } from '@group4officesupplies/common/hooks/useAppSelector';
+import { setUserId } from '@group4officesupplies/common/redux/rootConfigSlice';
 
-const ProfileScreenContainer: React.FC = () => {
-  //   const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
-  //     useContext(AuthContext);
+const ProfileContainerScreen = () => {
+  const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+  const { userId } = useAppSelector(state => state.rootConfigSliceReducer);
 
-  //   const handleLogout = async () => {
-  //     const res = await logout();
-  //     if (res.success === true) {
-  //       ToastAndroid.show('Logged Out Successfully', ToastAndroid.BOTTOM);
-  //       setIsLoggedIn(false);
-  //       setCurrentUser(null);
-  //     }
-  //   };
+  const { data: userProfile } = useGetProfile(userId);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      if (userId?.length <= 0) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: LOGIN_SCREEN }],
+        });
+      }
+    }, []),
+  );
+
+  const handleLogout = async () => {
+    try {
+      await auth().signOut();
+      removeFromAsyncStorage(LocalStorageKey.USER_ID);
+      dispatch(setUserId(''));
+      navigation.reset({
+        index: 0,
+        routes: [{ name: LOGIN_SCREEN }],
+      });
+    } catch (err) {
+      console.log('Logout errors::::', err);
+    }
+  };
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <View style={styles.imageContainer}>
-          <View style={styles.borderContainer}>
-            {/* <Image source={User} style={styles.image} /> */}
-          </View>
-        </View>
-        <View style={styles.infoContainer}>
-          {/* {isLoggedIn ? (
-            <View style={styles.textContainer}>
-              <Text style={styles.name}>{currentUser?.name}</Text>
-              <Text style={styles.email}>{currentUser?.email}</Text>
-            </View>
-          ) : (
-            <View style={styles.textContainer}>
-              <Text style={styles.loginText}>Login to view your Profile!</Text>
-            </View>
-          )} */}
-        </View>
-      </View>
-      {/* {isLoggedIn && (
-        <View style={styles.buttonContainer}>
-          <Pressable onPress={handleLogout} style={styles.button}>
-            <Text style={styles.buttonText}>Log Out</Text>
-          </Pressable>
-        </View>
-      )} */}
+    <SafeAreaView>
+      <ScrollView height={'100%'} bgColor={'#f8f8f8'}>
+        <ProfileHeader
+          name={userProfile?.name || ''}
+          phoneNumber={userProfile?.phoneNumber || ''}
+        />
+        <Stack padding={'16px'} space={'12px'} mb={50}>
+          <Box
+            borderRadius={'24px'}
+            overflow={'hidden'}
+            px={'24px'}
+            pb={'10px'}
+            pt={'10px'}
+            bgColor={'#FFF'}>
+            <Heading
+              fontSize={'18px'}
+              fontWeight={'600'}
+              mt={'16px'}
+              fontFamily={'Averta-Semibold'}>
+              Giỏ hàng
+            </Heading>
+            <ProfileTabBottom
+              onPress={() => {}}
+              isLastChild
+              sourceImage={ImagePath.shoppingBag}
+              title="Đơn hàng của tôi"
+            />
+            <ProfileTabBottom
+              onPress={() => {}}
+              isLastChild
+              sourceImage={ImagePath.truck}
+              title="Lịch sử đặt hàng"
+            />
+          </Box>
+          <Box
+            borderRadius={'24px'}
+            overflow={'hidden'}
+            px={'24px'}
+            pb={'10px'}
+            pt={'10px'}
+            bgColor={'#FFF'}>
+            <Heading
+              fontSize={'18px'}
+              fontWeight={'600'}
+              mt={'16px'}
+              fontFamily={'Averta-Semibold'}>
+              Cài đặt
+            </Heading>
+            <ProfileTabBottom
+              onPress={handleLogout}
+              isLastChild
+              sourceImage={ImagePath.logout}
+              title="Đăng xuất"
+            />
+          </Box>
+          <Box mb={'50px'} />
+        </Stack>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default ProfileScreenContainer;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    flex: 1,
-    padding: 24,
-    justifyContent: 'space-between',
-  },
-  imageContainer: {
-    marginTop: 64,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  borderContainer: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 10,
-  },
-  image: {
-    width: 128,
-    height: 128,
-    resizeMode: 'cover',
-  },
-  infoContainer: {
-    marginTop: 24,
-    alignItems: 'center',
-  },
-  textContainer: {
-    alignItems: 'center',
-  },
-  name: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  email: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#888',
-  },
-  loginText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  buttonContainer: {
-    alignItems: 'center',
-  },
-  button: {
-    backgroundColor: 'black',
-    width: '100%',
-    padding: 16,
-    borderRadius: 10,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});
+export default ProfileContainerScreen;
