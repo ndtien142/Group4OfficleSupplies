@@ -1,6 +1,6 @@
 import { ImagePath } from '@group4officesupplies/common/constants/imagePath';
 import { Box, Heading, ScrollView, Stack } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ProfileHeader from './components/ProfileHeader';
 import ProfileTabBottom from './components/ProfileTabBottom';
@@ -8,21 +8,16 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { LOGIN_SCREEN } from '@group4officesupplies/common/constants/route.constant';
 import auth from '@react-native-firebase/auth';
 import { useGetProfile } from './hooks/useGetProfile';
-import {
-  getFromAsyncStorage,
-  removeFromAsyncStorage,
-} from '@group4officesupplies/common/utils/utils.common';
+import { removeFromAsyncStorage } from '@group4officesupplies/common/utils/utils.common';
 import { LocalStorageKey } from '@group4officesupplies/common/constants/common.constants';
 import { useAppDispatch } from '@group4officesupplies/common/hooks/useAppDispatch';
 import { useAppSelector } from '@group4officesupplies/common/hooks/useAppSelector';
 import { setUserId } from '@group4officesupplies/common/redux/rootConfigSlice';
-import { getProfileUser } from './profile.service';
 
 const ProfileContainerScreen = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { userId } = useAppSelector(state => state.rootConfigSliceReducer);
-  console.log('user id in profile', userId);
 
   const { data: userProfile } = useGetProfile(userId);
 

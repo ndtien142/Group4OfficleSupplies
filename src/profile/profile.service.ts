@@ -6,20 +6,18 @@ export const getProfileUser = async (
   userId: string,
 ): Promise<IUserResponse | null> => {
   try {
-    console.log('debug userId:', userId);
-    const docRef = await firestore().collection(USER_COLLECTION).doc(userId);
-    console.log('docRef:::', docRef);
+    const docRef = firestore()
+      .collection('users')
+      .doc(userId.trim().replace(/['"]+/g, ''));
     const doc = await docRef.get();
-    console.log('doc:', doc);
-    // if (doc.exists) {
-    var result = doc.data() as IUserResponse;
-    // result.id = userId;
-    console.log('user::', result);
-    return result;
-    // } else {
-    //   console.log('No such user!');
-    //   return null;
-    // }
+    if (doc.exists) {
+      var result = doc.data() as IUserResponse;
+      // result.id = userId;
+      return result;
+    } else {
+      console.log('No such user!');
+      return null;
+    }
   } catch (error) {
     console.error('Error getting product by ID: ', error);
     throw error;
