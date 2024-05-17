@@ -51,3 +51,6 @@ export const FORGOT_PASSWORD = 'ForgotPassword';
 export const MANAGER_EDIT_PRODUCT = 'ManagerEditProduct';
 export const MANAGER_LIST_PRODUCT = 'ManagerListProduct';
 export const MANAGER_ADD_NEW_PRODUCT = 'ManagerAddNewProduct';
+
+// Profile
+export const MY_ORDER = 'MyOrder';
