@@ -24,10 +24,13 @@ import { IProduct } from '@group4officesupplies/common/interface/product.interfa
 import { getProductById } from '@group4officesupplies/common/services/product.service';
 import QuantityControl from './components/QuantityControl';
 import { getCartItemByUserID } from '@group4officesupplies/common/services/cart.service';
-// import { useGetCart } from './hooks/';
-
-// import { useGetDetailProduct } from './hooks/useGetDetailProduct';
-// import DetailProductSkeleton from './components/DetailProductSkeleton';
+import { useAppSelector } from '@group4officesupplies/common/hooks/useAppSelector';
+import 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+import { ORDER } from '@group4officesupplies/common/constants/route.constant';
+import { USER_COLLECTION } from '@group4officesupplies/common/constants/collection.constants';
+import { db, auth } from 'firebase';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 
 interface Item {
   id: string;
@@ -39,33 +42,18 @@ interface Item {
 }
 
 const CartScreenContainer = () => {
-  //   const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
-  //     useContext(AuthContext);
-
-  //   const handleLogout = async () => {
-  //     const res = await logout();
-  //     if (res.success === true) {
-  //       ToastAndroid.show('Logged Out Successfully', ToastAndroid.BOTTOM);
-  //       setIsLoggedIn(false);
-  //       setCurrentUser(null);
-  //     }
-  //   };
-
   const router = useRoute();
   const widthScreen = Dimensions.get('screen').width;
   const [qty, setQty] = useState(1);
+  const { userId } = useAppSelector(state => state.rootConfigSliceReducer);
+  const userID = userId.trim().replace(/['"]+/g, '');
 
-  // @ts-ignore
-  const id = router?.params?.userID
-    ? 'LsjNM7U2G0OWLGaKtTuziX6MCls1'
-    : 'LsjNM7U2G0OWLGaKtTuziX6MCls1';
   const navigation = useNavigation();
-  const { data: cart, isLoading } = useGetCart(id as string);
+  const { data: cart, isLoading } = useGetCart(userID as string);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [checkedItems, setCheckedItems] = useState<
     { id: string; isChecked: boolean; quantity: number }[]
   >([]);
-  // const [quantity, setQuantity] = useState({});
 
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -87,7 +75,7 @@ const CartScreenContainer = () => {
 
   const handleCheckboxChange = async (productId: string) => {
     console.log('changeds' + productId);
-    const newCart = await getCartItemByUserID(id);
+    const newCart = await getCartItemByUserID(userID);
     setCheckedItems(prevState => {
       const updatedCheckedItems = prevState.map(item => {
         if (item.id === productId) {
@@ -105,18 +93,61 @@ const CartScreenContainer = () => {
     });
   };
 
-  // Function to handle quantity change
-  // const handleQuantityChange = (productId: any, newQuantity: any) => {
-  //   setQuantity((prevQuantity: any) => ({
-  //     ...prevQuantity,
-  //     [productId]: newQuantity,
-  //   }));
-  // };
-
-  // Function to handle payment
+  const placeOrder = async (orderData: any) => {
+    try {
+      const ordersCollection = collection(db, 'orders');
+      await addDoc(ordersCollection, {
+        ...orderData,
+        createdAt: Timestamp.now(),
+      });
+      console.log('Order placed successfully!');
+    } catch (error) {
+      console.error('Error placing order: ', error);
+      throw error;
+    }
+  };
   const handlePayment = async () => {
-    for (const productId in checkedItems) {
-      console.log(productId);
+    try {
+      const orderItems = await Promise.all(
+        checkedItems
+          .filter(item => item.isChecked)
+          .map(async item => {
+            const product = await getProductById(item.id);
+            return product
+              ? {
+                  brand: product.brand,
+                  productID: product.id,
+                  image: product.image,
+                  price: product.price,
+                  quantity: item.quantity,
+                  title: product.title,
+                }
+              : null;
+          }),
+      );
+
+      const validOrderItems = orderItems.filter(item => item !== null);
+
+      if (validOrderItems.length === 0) {
+        console.log('Please select at least one product to place an order.');
+        return;
+      }
+
+      const newOrder = {
+        userID,
+        items: validOrderItems,
+        total: totalPrice,
+        createdAt: Timestamp.now().toString(),
+        state: 'Đang xác nhận',
+      };
+
+      await placeOrder(newOrder);
+
+      console.log('Order placed successfully!');
+      // navigation.navigate('OrderConfirmation');
+    } catch (error) {
+      console.error('Error placing order: ', error);
+      console.log('Failed to place order. Please try again.');
     }
   };
 
@@ -128,24 +159,27 @@ const CartScreenContainer = () => {
           return product;
         });
         const resolvedProducts = await Promise.all(productPromises);
-        setProducts(
-          resolvedProducts.filter(
-            (product): product is IProduct =>
-              product !== null && product !== undefined,
-          ),
-        ); // Lọc ra các sản phẩm không phải null hoặc undefined
+        const validProducts = resolvedProducts.filter(
+          (product): product is IProduct =>
+            product !== null && product !== undefined,
+        );
+        setProducts(validProducts); // Cập nhật products
+
+        const newCheckedItems = validProducts.map(product => ({
+          id: product.id,
+          isChecked: false, // Khởi tạo isChecked cho mỗi sản phẩm là false
+          quantity:
+            cart?.find(item => item.productID === product.id)?.quantity || 0,
+        }));
+        setCheckedItems(newCheckedItems); // Cập nhật checkedItems
+      } else {
+        setProducts([]);
+        setCheckedItems([]);
       }
-      const newCheckedItems = products.map(product => ({
-        id: product.id,
-        isChecked: false, // Khởi tạo isChecked cho mỗi sản phẩm là false
-        quantity:
-          cart?.find(item => item.productID === product.id)?.quantity || 0,
-      }));
-      setCheckedItems(newCheckedItems); // Cập nhật checkedItems
     };
 
     fetchProducts();
-  }, [cart]);
+  }, [cart]); // Thêm cart vào mảng dependency
 
   useEffect(() => {
     setTotalPrice(calculateTotalPrice());
@@ -237,7 +271,7 @@ const CartScreenContainer = () => {
                     <HStack>
                       <Text color={'#000'}>Số lượng: </Text>{' '}
                       <QuantityControl
-                        userID={'LsjNM7U2G0OWLGaKtTuziX6MCls1'}
+                        userID={userID}
                         productID={product.id}
                         quantity={
                           cart?.find(item => item.productID === product.id)
@@ -298,7 +332,9 @@ const CartScreenContainer = () => {
               width={'140px'}
               borderRadius={'12px'}
               justifyContent={'center'}
-              alignItems={'center'}>
+              alignItems={'center'}
+              //here
+              onPress={handlePayment}>
               <Text
                 color={'#FFF'}
                 fontWeight={600}

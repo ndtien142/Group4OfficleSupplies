@@ -17,7 +17,22 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useGetDetailProduct } from './hooks/useGetDetailProduct';
 import DetailProductSkeleton from './components/DetailProductSkeleton';
-
+import { db, auth, firestore } from 'firebase';
+import {
+  collection,
+  addDoc,
+  Timestamp,
+  query,
+  where,
+  getDocs,
+  arrayUnion,
+  doc,
+  updateDoc,
+  getDoc,
+  setDoc,
+} from 'firebase/firestore';
+import { USER_COLLECTION } from '@group4officesupplies/common/constants/collection.constants';
+import { useAppSelector } from '@group4officesupplies/common/hooks/useAppSelector';
 const DetailProductScreen = () => {
   const router = useRoute();
   const widthScreen = Dimensions.get('screen').width;
@@ -26,6 +41,9 @@ const DetailProductScreen = () => {
   // @ts-ignore
   const id = router?.params?.productId;
   const navigation = useNavigation();
+  const { userId } = useAppSelector(state => state.rootConfigSliceReducer);
+  const userID = userId.trim().replace(/['"]+/g, '');
+  // @ts-ignore
   const { data: product, isLoading } = useGetDetailProduct(id as string);
 
   const handleIncrement = () => {
@@ -41,7 +59,41 @@ const DetailProductScreen = () => {
     navigation.goBack();
   };
 
-  const addItemToCart = () => {};
+  const addItemToCart = async (userId: string) => {
+    try {
+      // Lấy tài liệu của người dùng
+      console.log('phi id is' + userId);
+      const userRef = doc(db, 'users', userId);
+
+      // Lấy dữ liệu hiện tại của người dùng
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+
+        // Kiểm tra xem giỏ hàng có tồn tại không
+        if (userData && userData.cart) {
+          // Thêm mục mới vào giỏ hàng
+          const newCartItem = { productID: id, quantity: qty };
+          await updateDoc(userRef, {
+            cart: arrayUnion(newCartItem),
+          });
+
+          console.log('Item added to cart successfully');
+        } else {
+          // Nếu giỏ hàng không tồn tại, tạo giỏ hàng mới với mục mới
+          const newCartItem = { productID: id, quantity: qty };
+          await setDoc(userRef, { cart: [newCartItem] }, { merge: true });
+
+          console.log('Cart created and item added to cart successfully');
+        }
+      } else {
+        console.error('User document not found');
+      }
+    } catch (error) {
+      console.error('Error adding item to cart: ', error);
+      throw error;
+    }
+  };
 
   return (
     <SafeAreaView>
@@ -147,6 +199,7 @@ const DetailProductScreen = () => {
                   </TouchableOpacity>
                 </HStack>
                 <Button
+                  onPress={() => addItemToCart(userID)}
                   height={'40px'}
                   bgColor={'#E82629'}
                   borderRadius={'12px'}
