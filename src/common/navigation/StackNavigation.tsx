@@ -73,19 +73,6 @@ const OrderStackNavigator: React.FC = () => {
 };
 
 const ProfileStackNavigator: React.FC = () => {
-  const navigation = useNavigation();
-  useEffect(() => {
-    const getUserId = async () => {
-      const userId = await getFromAsyncStorage(LocalStorageKey.USER_ID);
-      if (!userId) {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: LOGIN_SCREEN }],
-        });
-      }
-    };
-    getUserId();
-  }, []);
   return (
     <Stack.Navigator
       screenOptions={{

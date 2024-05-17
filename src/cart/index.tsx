@@ -27,10 +27,21 @@ import { getCartItemByUserID } from '@group4officesupplies/common/services/cart.
 import { useAppSelector } from '@group4officesupplies/common/hooks/useAppSelector';
 import 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
-import { ORDER } from '@group4officesupplies/common/constants/route.constant';
+import {
+  BOTTOM_TAB_ORDER,
+  ORDER,
+} from '@group4officesupplies/common/constants/route.constant';
 import { USER_COLLECTION } from '@group4officesupplies/common/constants/collection.constants';
 import { db, auth } from 'firebase';
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  doc,
+  updateDoc,
+  deleteField,
+} from 'firebase/firestore';
+import { useQueryClient } from 'react-query';
+import { QUERY_KEYS } from '@group4officesupplies/common/constants/querykeys.constants';
 
 interface Item {
   id: string;
@@ -44,6 +55,7 @@ interface Item {
 const CartScreenContainer = () => {
   const router = useRoute();
   const widthScreen = Dimensions.get('screen').width;
+  const queryClient = useQueryClient();
   const [qty, setQty] = useState(1);
   const { userId } = useAppSelector(state => state.rootConfigSliceReducer);
   const userID = userId.trim().replace(/['"]+/g, '');
@@ -98,7 +110,7 @@ const CartScreenContainer = () => {
       const ordersCollection = collection(db, 'orders');
       await addDoc(ordersCollection, {
         ...orderData,
-        createdAt: Timestamp.now(),
+        createdAt: new Date().toISOString(),
       });
       console.log('Order placed successfully!');
     } catch (error) {
@@ -137,14 +149,21 @@ const CartScreenContainer = () => {
         userID,
         items: validOrderItems,
         total: totalPrice,
-        createdAt: Timestamp.now().toString(),
+        createdAt: new Date().toISOString(),
         state: 'Đang xác nhận',
       };
 
       await placeOrder(newOrder);
-
+      queryClient.invalidateQueries(QUERY_KEYS.CART);
       console.log('Order placed successfully!');
-      // navigation.navigate('OrderConfirmation');
+      const userRef = doc(db, 'users', userID);
+      await updateDoc(userRef, {
+        cart: deleteField(),
+      });
+      console.log('Order delete cart successfully!');
+      setProducts([]);
+      setTotalPrice(0);
+      navigation.navigate(BOTTOM_TAB_ORDER);
     } catch (error) {
       console.error('Error placing order: ', error);
       console.log('Failed to place order. Please try again.');

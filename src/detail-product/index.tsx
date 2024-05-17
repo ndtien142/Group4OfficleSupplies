@@ -33,7 +33,11 @@ import {
 } from 'firebase/firestore';
 import { USER_COLLECTION } from '@group4officesupplies/common/constants/collection.constants';
 import { useAppSelector } from '@group4officesupplies/common/hooks/useAppSelector';
+import { useQueryClient } from 'react-query';
+import { QUERY_KEYS } from '@group4officesupplies/common/constants/querykeys.constants';
+import { BOTTOM_TAB_CART } from '@group4officesupplies/common/constants/route.constant';
 const DetailProductScreen = () => {
+  const queryClient = useQueryClient();
   const router = useRoute();
   const widthScreen = Dimensions.get('screen').width;
   const RATIO_BANNER = 343 / 178;
@@ -77,13 +81,16 @@ const DetailProductScreen = () => {
           await updateDoc(userRef, {
             cart: arrayUnion(newCartItem),
           });
+          queryClient.invalidateQueries(QUERY_KEYS.CART);
+          navigation.navigate(BOTTOM_TAB_CART as never);
 
           console.log('Item added to cart successfully');
         } else {
           // Nếu giỏ hàng không tồn tại, tạo giỏ hàng mới với mục mới
           const newCartItem = { productID: id, quantity: qty };
           await setDoc(userRef, { cart: [newCartItem] }, { merge: true });
-
+          queryClient.invalidateQueries(QUERY_KEYS.CART);
+          navigation.navigate(BOTTOM_TAB_CART as never);
           console.log('Cart created and item added to cart successfully');
         }
       } else {
@@ -199,7 +206,9 @@ const DetailProductScreen = () => {
                   </TouchableOpacity>
                 </HStack>
                 <Button
-                  onPress={() => addItemToCart(userID)}
+                  onPress={() => {
+                    addItemToCart(userID);
+                  }}
                   height={'40px'}
                   bgColor={'#E82629'}
                   borderRadius={'12px'}

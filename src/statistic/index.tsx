@@ -20,10 +20,13 @@ const StatisticScreen = () => {
           id: doc.id,
           ...doc.data(),
         }));
-        setOrders(ordersList);
-        calculateRevenue(ordersList);
-        calculateMonthlyRevenue(ordersList);
-        calculateBestSellingProducts(ordersList);
+        const completeOrders = ordersList.filter(
+          order => order?.state === 'complete',
+        );
+        setOrders(completeOrders);
+        calculateRevenue(completeOrders);
+        calculateMonthlyRevenue(completeOrders);
+        calculateBestSellingProducts(completeOrders);
       } catch (error) {
         console.error('Error fetching orders: ', error);
       }
@@ -45,21 +48,21 @@ const StatisticScreen = () => {
   const parseDate = dateString => {
     const parts = dateString.split(' ');
     const monthMap = {
-      Jan: '01',
-      Feb: '02',
-      Mar: '03',
-      Apr: '04',
+      January: '01',
+      February: '02',
+      March: '03',
+      April: '04',
       May: '05',
-      Jun: '06',
-      Jul: '07',
-      Aug: '08',
-      Sep: '09',
-      Oct: '10',
-      Nov: '11',
-      Dec: '12',
+      June: '06',
+      July: '07',
+      August: '08',
+      September: '09',
+      October: '10',
+      November: '11',
+      December: '12',
     };
-    const day = parts[1].replace(',', '');
     const month = monthMap[parts[0]];
+    const day = parts[1].replace(',', '');
     const year = parts[2];
     return new Date(`${year}-${month}-${day}`);
   };
@@ -68,7 +71,8 @@ const StatisticScreen = () => {
     const revenue = [];
 
     ordersList.forEach(order => {
-      const createdAt = parseDate(order.createdAt);
+      const createdAt = new Date(order.createdAt);
+      console.log('createdAt: ', createdAt);
       const month = `${createdAt.getFullYear()}-${(createdAt.getMonth() + 1)
         .toString()
         .padStart(2, '0')}`;
@@ -86,10 +90,6 @@ const StatisticScreen = () => {
 
     setMonthlyRevenue(revenue);
   };
-
-  console.log('order', orders);
-  console.log('revenue', revenue);
-  console.log('monthlyRevenue', monthlyRevenue);
 
   const calculateBestSellingProducts = async ordersList => {
     const productMap = new Map();
@@ -136,7 +136,7 @@ const StatisticScreen = () => {
     setBestSellingProducts(products);
   };
 
-  console.log('bestSellingProducts', bestSellingProducts);
+  console.log('bestSellingProducts', monthlyRevenue);
 
   return (
     <SafeAreaView>
@@ -147,7 +147,7 @@ const StatisticScreen = () => {
         space={'16px'}
         px={'16px'}
         mt={'16px'}>
-        <MonthlySales monthlyRevenue={[{ '2023-05': 10 }, { '2023-06': 20 }]} />
+        <MonthlySales monthlyRevenue={monthlyRevenue} />
         <Box width={'100%'} bgColor={'#000'} height={'1px'} />
         <MostSalesPieChart data={bestSellingProducts} />
         {/* <MostSalesPieChart /> */}

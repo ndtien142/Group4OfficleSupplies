@@ -1,28 +1,11 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import {
-  Box,
-  Button,
-  Center,
-  Checkbox,
-  HStack,
-  Image,
-  ScrollView,
-  Stack,
-  Text,
-  VStack,
-} from 'native-base';
+import { Box, HStack, ScrollView, Stack, Text } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useGetDetailProduct } from '@group4officesupplies/detail-product/hooks/useGetDetailProduct';
-import { IProduct } from '@group4officesupplies/common/interface/product.interface';
-import { getProductById } from '@group4officesupplies/common/services/product.service';
 import { useGetOrders } from './hooks/useGetOrder';
 import { useAppSelector } from '@group4officesupplies/common/hooks/useAppSelector';
-import OrderDetails from './components/OrderDetails';
 
 const OrderScreenContainer = () => {
   const router = useRoute();
@@ -75,17 +58,15 @@ const OrderScreenContainer = () => {
                     marginLeft={'20px'}
                     justifyContent={'space-between'}>
                     <HStack>
-                      <Text>Ngày đặt: {order.createdAt}</Text>
+                      <Text>Ngày đặt: {order?.createdAt}</Text>
                     </HStack>
                     <HStack>
-                      <Text color={'#000'}>Tổng tiền: {order.total} </Text>{' '}
+                      <Text color={'#000'}>Tổng tiền: {order?.total} </Text>{' '}
                     </HStack>
                     <HStack>
-                      <Text color={'#000'}>Trạng thái: {order.state} </Text>{' '}
+                      <Text color={'#000'}>Trạng thái: {order?.state} </Text>{' '}
                     </HStack>
-                    <HStack>
-                      <OrderDetails orderItems={order} />
-                    </HStack>
+                    <HStack>{/* <OrderDetails orderItems={order} /> */}</HStack>
                   </Box>
                 </Box>
                 {/* Separator */}
