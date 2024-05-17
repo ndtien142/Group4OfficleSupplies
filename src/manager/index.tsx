@@ -58,37 +58,6 @@ const ManagerTabGeneral = () => {
               fontWeight={'600'}
               mt={'16px'}
               fontFamily={'Averta-Semibold'}>
-              Quản lý đơn hàng
-            </Heading>
-            <ManagerTabBottom
-              onPress={() => {}}
-              sourceImage={''}
-              title="Đơn hàng xét duyệt"
-            />
-            <ManagerTabBottom
-              onPress={() => {}}
-              sourceImage={''}
-              title="Đơn hàng đóng gói"
-            />
-            <ManagerTabBottom
-              onPress={() => {}}
-              isLastChild
-              sourceImage={''}
-              title="Đơn hàng vận chuyển"
-            />
-          </Box>
-          <Box
-            borderRadius={'24px'}
-            overflow={'hidden'}
-            px={'24px'}
-            pb={'10px'}
-            pt={'10px'}
-            bgColor={'#FFF'}>
-            <Heading
-              fontSize={'18px'}
-              fontWeight={'600'}
-              mt={'16px'}
-              fontFamily={'Averta-Semibold'}>
               Thống kê
             </Heading>
             <ManagerTabBottom
