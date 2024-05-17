@@ -24,6 +24,7 @@ const ServiceItem = ({ data }: { data: IServiceItem }) => {
         <Stack
           justifyContent={'center'}
           alignItems={'center'}
+          overflow={'hidden'}
           borderRadius={'200px'}
           width={'60px'}
           height={'60px'}>

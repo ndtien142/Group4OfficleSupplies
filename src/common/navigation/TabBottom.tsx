@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TouchableOpacity } from 'react-native';
 // import component from package
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import component from pages
-import { Center, Flex, Image, Text, View } from 'native-base';
-import { useAppSelector } from '../hooks/useAppSelector';
+import { Flex, Text } from 'native-base';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {
@@ -15,7 +14,6 @@ import {
 } from './StackNavigation';
 import {
   BOTTOM_TAB_CART,
-  BOTTOM_TAB_EXERCISE,
   BOTTOM_TAB_HOME,
   BOTTOM_TAB_ORDER,
   BOTTOM_TAB_PROFILE,
@@ -23,14 +21,10 @@ import {
 } from '../constants/route.constant';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import ExerciseContainer from '@group4officesupplies/exercise';
-import ManagerContainer from '@group4officesupplies/manager';
-import StatisticScreen from '@group4officesupplies/statistic';
 
 import { ICartItem } from '../interface/cart.interface';
 import { IUser } from '../interface/user.interface';
-import ManageListProductContainer from '@group4officesupplies/manager/list';
-
+import ManagerTabGeneral from '@group4officesupplies/manager';
 
 const Tab = createBottomTabNavigator();
 
@@ -179,7 +173,7 @@ const TabBottom = () => {
         }}></Tab.Screen>
       <Tab.Screen
         name={BOTTOM_TAB_MANAGER}
-        component={ManageListProductContainer}
+        component={ManagerTabGeneral}
         options={{
           tabBarIcon: ({ size, color }) => (
             <TouchableOpacity

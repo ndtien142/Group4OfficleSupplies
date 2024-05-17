@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     borderWidth: 1,
     borderColor: '#d1d5db',
+    marginRight: 20,
   },
   innerContainer: {
     flexDirection: 'row',

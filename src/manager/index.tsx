@@ -1,174 +1,115 @@
-import React, { useState } from 'react';
-import {
-  View,
-  TextInput,
-  Button,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import { Box, Heading, ScrollView, Stack } from 'native-base';
+import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import ManagerTabBottom from './components/ManagerTabBottom';
 import { useNavigation } from '@react-navigation/native';
-import { IUploadProduct } from './manage.interface';
-import { uploadProduct } from './manager.service';
-import { useAppDispatch } from '@group4officesupplies/common/hooks/useAppDispatch';
-import { setIsOpenSelectMethodImagePicker, setNewImage } from '@group4officesupplies/common/components/image-picker/imagePicker.slice';
-import SelectMethodImagePicker from '@group4officesupplies/common/components/image-picker/SelectMethodImagePicker';
-import { useAppSelector } from '@group4officesupplies/common/hooks/useAppSelector';
-import { useFocusEffect } from '@react-navigation/native';
+import {
+  MANAGER_ADD_NEW_PRODUCT,
+  MANAGER_LIST_PRODUCT,
+  STATISTICS,
+} from '@group4officesupplies/common/constants/route.constant';
 
-const AddProduct = () => {
-  const dispatch = useAppDispatch();
+const ManagerTabGeneral = () => {
   const navigation = useNavigation();
-  const [brand, setBrand] = useState('');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [imageUri, setImageUri] = useState('');
-  const { imagePicker } = useAppSelector(state => state.imagePickerReducer);
-
-  const generateId = () => {
-    return '_' + Math.random().toString(36).substr(2, 9);
-  };
-
-  const selectImage = () => {
-    dispatch(setIsOpenSelectMethodImagePicker(true));
-  };
-
-  const addProduct = async () => {
-    const newProduct: IUploadProduct = {
-      id: generateId(),
-      brand,
-      title,
-      description,
-      image: imagePicker.uri,
-      price: parseFloat(price),
-      status: 'active',
-    };
-    try {
-      await uploadProduct(newProduct);
-      clearFields();
-      Alert.alert('Success', 'Product added successfully');
-      navigation.navigate('ManageListProductContainer');
-    } catch (error) {
-      console.error('Error adding product: ', error);
-      Alert.alert('Error', 'Failed to add product');
-    }
-  };
-
-  const clearFields = () => {
-    setBrand('');
-    setTitle('');
-    setDescription('');
-    setPrice('');
-    setImageUri('');
-    dispatch(setNewImage({}));
-  };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      dispatch(setNewImage({}));
-    }, []),
-  );
-
   return (
-    <View style={styles.container}>
-      <AntDesign 
-        name="arrowleft"
-        size={30}
-        color="black"
-        onPress={() => navigation.goBack()}
-        style={styles.backButton}
-      />
-      <Text style={styles.title}>Add New Product</Text>
-      <View style={styles.form}>
-        <TextInput
-          placeholder="Brand"
-          value={brand}
-          onChangeText={setBrand}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Title"
-          value={title}
-          onChangeText={setTitle}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Description"
-          value={description}
-          onChangeText={setDescription}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Price"
-          value={price}
-          onChangeText={setPrice}
-          keyboardType="numeric"
-          style={styles.input}
-        />
-        <Button title="Select Image" onPress={selectImage} />
-        <SelectMethodImagePicker />
-      </View>
-      {imagePicker?.uri?.length > 0 && (
-        <View style={styles.imageContainer}>
-          <Image
-            key={imagePicker?.uri}
-            source={{ uri: imagePicker?.uri }}
-            style={styles.image}
-          />
-          <TouchableOpacity onPress={clearFields}>
-            <AntDesign name="delete" size={30} />
-          </TouchableOpacity>
-        </View>
-      )}
-      <Button title="Add Product" onPress={addProduct} />
-    </View>
+    <SafeAreaView>
+      <ScrollView height={'100%'} bgColor={'#f8f8f8'} pt={10}>
+        <Heading textAlign={'center'}>Quản lý ứng dụng</Heading>
+        <Stack padding={'16px'} space={'12px'} mb={50}>
+          <Box
+            borderRadius={'24px'}
+            overflow={'hidden'}
+            px={'24px'}
+            pb={'10px'}
+            pt={'10px'}
+            bgColor={'#FFF'}>
+            <Heading
+              fontSize={'18px'}
+              fontWeight={'600'}
+              mt={'16px'}
+              fontFamily={'Averta-Semibold'}>
+              Quản lý sản phẩm
+            </Heading>
+            <ManagerTabBottom
+              onPress={() => {
+                navigation.navigate(MANAGER_LIST_PRODUCT as never);
+              }}
+              sourceImage={''}
+              title="Danh sách sản phẩm"
+            />
+            <ManagerTabBottom
+              onPress={() => {
+                navigation.navigate(MANAGER_ADD_NEW_PRODUCT as never);
+              }}
+              isLastChild
+              sourceImage={''}
+              title="Thêm sản phẩm mới"
+            />
+          </Box>
+          <Box
+            borderRadius={'24px'}
+            overflow={'hidden'}
+            px={'24px'}
+            pb={'10px'}
+            pt={'10px'}
+            bgColor={'#FFF'}>
+            <Heading
+              fontSize={'18px'}
+              fontWeight={'600'}
+              mt={'16px'}
+              fontFamily={'Averta-Semibold'}>
+              Quản lý đơn hàng
+            </Heading>
+            <ManagerTabBottom
+              onPress={() => {}}
+              sourceImage={''}
+              title="Đơn hàng xét duyệt"
+            />
+            <ManagerTabBottom
+              onPress={() => {}}
+              sourceImage={''}
+              title="Đơn hàng đóng gói"
+            />
+            <ManagerTabBottom
+              onPress={() => {}}
+              isLastChild
+              sourceImage={''}
+              title="Đơn hàng vận chuyển"
+            />
+          </Box>
+          <Box
+            borderRadius={'24px'}
+            overflow={'hidden'}
+            px={'24px'}
+            pb={'10px'}
+            pt={'10px'}
+            bgColor={'#FFF'}>
+            <Heading
+              fontSize={'18px'}
+              fontWeight={'600'}
+              mt={'16px'}
+              fontFamily={'Averta-Semibold'}>
+              Thống kê
+            </Heading>
+            <ManagerTabBottom
+              onPress={() => {
+                navigation.navigate(STATISTICS);
+              }}
+              sourceImage={''}
+              title="Doanh thu"
+            />
+            <ManagerTabBottom
+              onPress={() => {}}
+              isLastChild
+              sourceImage={''}
+              title="Xuất báo cáo"
+            />
+          </Box>
+          <Box mb={'50px'} />
+        </Stack>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  backButton: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
-    zIndex: 1,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  form: {
-    width: '100%',
-    marginBottom: 20,
-  },
-  input: {
-    marginBottom: 10,
-    padding: 10,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    width: '100%',
-  },
-  imageContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    marginRight: 10,
-  },
-});
-
-export default AddProduct;
+export default ManagerTabGeneral;
