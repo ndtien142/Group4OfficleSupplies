@@ -5,7 +5,7 @@ export interface IProduct {
   image: string;
   price: number;
   title: string;
-  status:string;
+  status: string;
 }
 
 export interface IProductPromotional {
@@ -16,5 +16,5 @@ export interface IProductPromotional {
   price: number;
   title: string;
   salePrice: number;
-  status:string;
+  status: string;
 }

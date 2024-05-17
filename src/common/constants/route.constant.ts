@@ -46,3 +46,8 @@ export const LOGIN_SCREEN = 'LoginScreen';
 export const REGISTER_SCREEN = 'RegisterScreen';
 export const CHANGE_PASSWORD = 'ChangePassword';
 export const FORGOT_PASSWORD = 'ForgotPassword';
+
+// Manager
+export const MANAGER_EDIT_PRODUCT = 'ManagerEditProduct';
+export const MANAGER_LIST_PRODUCT = 'ManagerListProduct';
+export const MANAGER_ADD_NEW_PRODUCT = 'ManagerAddNewProduct';

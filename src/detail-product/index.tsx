@@ -26,7 +26,6 @@ const DetailProductScreen = () => {
   // @ts-ignore
   const id = router?.params?.productId;
   const navigation = useNavigation();
-  // @ts-ignore
   const { data: product, isLoading } = useGetDetailProduct(id as string);
 
   const handleIncrement = () => {
