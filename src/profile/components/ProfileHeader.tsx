@@ -1,9 +1,20 @@
+import {
+  resetImagePicker,
+  setIsOpenSelectMethodImagePicker,
+} from '@group4officesupplies/common/components/image-picker/imagePicker.slice';
 import SelectMethodImagePicker from '@group4officesupplies/common/components/image-picker/SelectMethodImagePicker';
 import { ImagePath } from '@group4officesupplies/common/constants/imagePath';
+import { useAppDispatch } from '@group4officesupplies/common/hooks/useAppDispatch';
+import { useAppSelector } from '@group4officesupplies/common/hooks/useAppSelector';
+import { getBlobFroUri } from '@group4officesupplies/common/utils/utils.common';
 import { Avatar, Box, Center, Heading, Stack, Text, View } from 'native-base';
-import React from 'react';
-import { ImageBackground, Pressable, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, ImageBackground, TouchableOpacity } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import storage from '@react-native-firebase/storage';
+import { updateProfileImage } from '../profile.service';
+import { useQueryClient } from 'react-query';
+import { QUERY_KEYS } from '@group4officesupplies/common/constants/querykeys.constants';
 
 const ProfileHeader = ({
   name,
@@ -14,6 +25,58 @@ const ProfileHeader = ({
   phoneNumber: string;
   image?: string;
 }) => {
+  const queryClient = useQueryClient();
+  const [isUploadImage, setIsUploadImage] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const { imagePicker } = useAppSelector(state => state.imagePickerReducer);
+  const { userId } = useAppSelector(state => state.rootConfigSliceReducer);
+
+  const handleSelectImage = () => {
+    setIsUploadImage(true);
+    dispatch(setIsOpenSelectMethodImagePicker(true));
+  };
+
+  const uploadImage = async () => {
+    if (!imagePicker?.uri) {
+      Alert.alert('No image selected');
+      return;
+    }
+    const imageBlob = await getBlobFroUri(imagePicker.uri);
+    console.log('image blob:::', imageBlob);
+
+    const filename = imagePicker.uri.substring(
+      imagePicker.uri.lastIndexOf('/') + 1,
+    );
+    const ref = storage().ref(`images/${new Date()}${filename}`);
+    try {
+      await ref.put(imageBlob);
+      const url = await ref.getDownloadURL();
+      return url;
+    } catch (e) {
+      console.log(e);
+      Alert.alert('Upload failed', e.message);
+    }
+  };
+
+  const handleUpdateAvatar = async () => {
+    const urlImage = await uploadImage();
+    console.log('URL:', urlImage);
+    await updateProfileImage(userId, urlImage);
+    setIsUploadImage(false);
+    dispatch(resetImagePicker());
+    queryClient.invalidateQueries(QUERY_KEYS.USER_PROFILE);
+  };
+
+  useEffect(() => {
+    if (!imagePicker || !isUploadImage) return;
+    handleUpdateAvatar();
+  }, [imagePicker]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetImagePicker());
+    };
+  }, []);
   return (
     <View
       bgColor={'#f8f8f8'}
@@ -59,9 +122,7 @@ const ProfileHeader = ({
             borderRadius={'50px'}
             borderWidth={'5px'}
             borderColor={'#FFF'}>
-            <Pressable
-            //   onPress={handlePressChangeImage}
-            >
+            <TouchableOpacity onPress={handleSelectImage}>
               <Avatar
                 size={'70px'}
                 source={{
@@ -80,7 +141,7 @@ const ProfileHeader = ({
                   <AntDesign name="camerao" size={16} />
                 </Avatar.Badge>
               </Avatar>
-            </Pressable>
+            </TouchableOpacity>
           </Center>
           <TouchableOpacity
             onPress={() => {

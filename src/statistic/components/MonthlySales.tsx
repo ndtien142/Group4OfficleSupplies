@@ -9,39 +9,21 @@ interface IDataResponse {
   data: string;
 }
 
-const MonthlySales = () => {
-  const [reports, setReports] = useState<number[]>([]);
-  const [loading, setLoading] = useState(true);
+const MonthlySales = ({ monthlyRevenue }: { monthlyRevenue: any }) => {
+  // Lấy danh sách các tháng từ monthlyRevenue
+  const labels = monthlyRevenue.map((item: any) => Object.keys(item)[0]);
 
-  const fetchReports = async () => {
-    // Đặt biến loading thành true khi bắt đầu gọi dữ liệu
-    setLoading(true);
-    try {
-      // Gọi dữ liệu từ Firebase
-      const result = await getReportMonthly();
-      const reportsResponse = result?.map(data => parseInt(data?.data));
-      setReports(reportsResponse);
-      setLoading(false);
-    } catch (error) {
-      // Xử lý lỗi nếu có
-      console.error('Error fetching products:', error);
-      setLoading(false);
-    }
-  };
+  // Lấy danh sách doanh thu từ monthlyRevenue
+  const revenueData = monthlyRevenue.map((item: any) => Object.values(item)[0]);
 
   const data = {
-    labels: ['Tháng một', 'Tháng hai', 'Tháng ba', 'Tháng bốn'],
+    labels: labels,
     datasets: [
       {
-        data: reports?.length > 0 ? reports : [200, 300, 200],
+        data: revenueData,
       },
     ],
   };
-
-  // Effect hook để gọi hàm fetchReports khi màn hình được hiển thị
-  useEffect(() => {
-    fetchReports();
-  }, []);
 
   return (
     <Stack width={'100%'} justifyContent={'center'} alignItems={'center'}>

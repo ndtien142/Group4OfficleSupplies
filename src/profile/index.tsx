@@ -1,11 +1,14 @@
 import { ImagePath } from '@group4officesupplies/common/constants/imagePath';
 import { Box, Heading, ScrollView, Stack } from 'native-base';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ProfileHeader from './components/ProfileHeader';
 import ProfileTabBottom from './components/ProfileTabBottom';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { LOGIN_SCREEN } from '@group4officesupplies/common/constants/route.constant';
+import {
+  LOGIN_SCREEN,
+  MY_ORDER,
+} from '@group4officesupplies/common/constants/route.constant';
 import auth from '@react-native-firebase/auth';
 import { useGetProfile } from './hooks/useGetProfile';
 import { removeFromAsyncStorage } from '@group4officesupplies/common/utils/utils.common';
@@ -51,6 +54,7 @@ const ProfileContainerScreen = () => {
         <ProfileHeader
           name={userProfile?.name || ''}
           phoneNumber={userProfile?.phoneNumber || ''}
+          image={userProfile?.image || ''}
         />
         <Stack padding={'16px'} space={'12px'} mb={50}>
           <Box
@@ -68,7 +72,9 @@ const ProfileContainerScreen = () => {
               Giỏ hàng
             </Heading>
             <ProfileTabBottom
-              onPress={() => {}}
+              onPress={() => {
+                navigation.navigate(MY_ORDER);
+              }}
               isLastChild
               sourceImage={ImagePath.shoppingBag}
               title="Đơn hàng của tôi"

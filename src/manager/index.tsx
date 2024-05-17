@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import {
   MANAGER_ADD_NEW_PRODUCT,
   MANAGER_LIST_PRODUCT,
+  STATISTICS,
 } from '@group4officesupplies/common/constants/route.constant';
 
 const ManagerTabGeneral = () => {
@@ -91,7 +92,9 @@ const ManagerTabGeneral = () => {
               Thống kê
             </Heading>
             <ManagerTabBottom
-              onPress={() => {}}
+              onPress={() => {
+                navigation.navigate(STATISTICS);
+              }}
               sourceImage={''}
               title="Doanh thu"
             />
