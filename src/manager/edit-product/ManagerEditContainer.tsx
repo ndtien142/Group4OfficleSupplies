@@ -62,7 +62,7 @@ const ManagerEditContainer = () => {
         description,
         price: parseFloat(price),
         image,
-        status: '',
+        status: 'active',
       });
       Alert.alert('Success', 'Product updated successfully');
       navigation.goBack();
