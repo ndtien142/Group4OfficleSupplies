@@ -2,49 +2,19 @@ import { Stack, Text } from 'native-base';
 import { StyleSheet } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 
-const MostSalesPieChart = () => {
-  const data = [
-    {
-      name: 'Bút chì 2B',
-      sales: 300,
-      color: 'rgba(131, 167, 234, 1)',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 15,
-    },
-    {
-      name: 'Vở campus',
-      sales: 200,
-      color: '#F00',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 15,
-    },
-    {
-      name: 'Kẹp giấy',
-      sales: 500,
-      color: 'red',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 15,
-    },
-    {
-      name: 'Lốc giấy A4',
-      sales: 400,
-      color: '#ffffff',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 15,
-    },
-    {
-      name: 'Khác',
-      sales: 90,
-      color: 'rgb(0, 0, 255)',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 15,
-    },
-  ];
+const MostSalesPieChart = ({ data }) => {
+  const chartData = data.map((item, index) => ({
+    name: item.productName,
+    sales: item.quantity,
+    color: generateColor(index),
+    legendFontColor: '#7F7F7F',
+    legendFontSize: 15,
+  }));
 
   return (
     <Stack width={'100%'} justifyContent={'center'} alignItems={'center'}>
       <PieChart
-        data={data}
+        data={chartData}
         width={350}
         height={220}
         chartConfig={chartConfig}
@@ -56,6 +26,17 @@ const MostSalesPieChart = () => {
       <Text style={styles.title}>Sản phẩm bán chạy</Text>
     </Stack>
   );
+};
+
+const generateColor = index => {
+  const colors = [
+    'rgba(131, 167, 234, 1)',
+    '#F00',
+    'red',
+    '#ffffff',
+    'rgb(0, 0, 255)',
+  ];
+  return colors[index % colors.length];
 };
 
 const chartConfig = {
