@@ -25,10 +25,12 @@ import { getProductById } from '@group4officesupplies/common/services/product.se
 import QuantityControl from './components/QuantityControl';
 import { getCartItemByUserID } from '@group4officesupplies/common/services/cart.service';
 import { useAppSelector } from '@group4officesupplies/common/hooks/useAppSelector';
-// import { useGetCart } from './hooks/';
-
-// import { useGetDetailProduct } from './hooks/useGetDetailProduct';
-// import DetailProductSkeleton from './components/DetailProductSkeleton';
+import 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+import { ORDER } from '@group4officesupplies/common/constants/route.constant';
+import { USER_COLLECTION } from '@group4officesupplies/common/constants/collection.constants';
+import { db, auth } from 'firebase';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 
 interface Item {
   id: string;
@@ -40,18 +42,6 @@ interface Item {
 }
 
 const CartScreenContainer = () => {
-  //   const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
-  //     useContext(AuthContext);
-
-  //   const handleLogout = async () => {
-  //     const res = await logout();
-  //     if (res.success === true) {
-  //       ToastAndroid.show('Logged Out Successfully', ToastAndroid.BOTTOM);
-  //       setIsLoggedIn(false);
-  //       setCurrentUser(null);
-  //     }
-  //   };
-
   const router = useRoute();
   const widthScreen = Dimensions.get('screen').width;
   const [qty, setQty] = useState(1);
@@ -64,7 +54,6 @@ const CartScreenContainer = () => {
   const [checkedItems, setCheckedItems] = useState<
     { id: string; isChecked: boolean; quantity: number }[]
   >([]);
-  // const [quantity, setQuantity] = useState({});
 
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -104,18 +93,61 @@ const CartScreenContainer = () => {
     });
   };
 
-  // Function to handle quantity change
-  // const handleQuantityChange = (productId: any, newQuantity: any) => {
-  //   setQuantity((prevQuantity: any) => ({
-  //     ...prevQuantity,
-  //     [productId]: newQuantity,
-  //   }));
-  // };
-
-  // Function to handle payment
+  const placeOrder = async (orderData: any) => {
+    try {
+      const ordersCollection = collection(db, 'orders');
+      await addDoc(ordersCollection, {
+        ...orderData,
+        createdAt: Timestamp.now(),
+      });
+      console.log('Order placed successfully!');
+    } catch (error) {
+      console.error('Error placing order: ', error);
+      throw error;
+    }
+  };
   const handlePayment = async () => {
-    for (const productId in checkedItems) {
-      console.log(productId);
+    try {
+      const orderItems = await Promise.all(
+        checkedItems
+          .filter(item => item.isChecked)
+          .map(async item => {
+            const product = await getProductById(item.id);
+            return product
+              ? {
+                  brand: product.brand,
+                  productID: product.id,
+                  image: product.image,
+                  price: product.price,
+                  quantity: item.quantity,
+                  title: product.title,
+                }
+              : null;
+          }),
+      );
+
+      const validOrderItems = orderItems.filter(item => item !== null);
+
+      if (validOrderItems.length === 0) {
+        console.log('Please select at least one product to place an order.');
+        return;
+      }
+
+      const newOrder = {
+        userID,
+        items: validOrderItems,
+        total: totalPrice,
+        createdAt: Timestamp.now().toString(),
+        state: 'Đang xác nhận',
+      };
+
+      await placeOrder(newOrder);
+
+      console.log('Order placed successfully!');
+      // navigation.navigate('OrderConfirmation');
+    } catch (error) {
+      console.error('Error placing order: ', error);
+      console.log('Failed to place order. Please try again.');
     }
   };
 
@@ -300,7 +332,9 @@ const CartScreenContainer = () => {
               width={'140px'}
               borderRadius={'12px'}
               justifyContent={'center'}
-              alignItems={'center'}>
+              alignItems={'center'}
+              //here
+              onPress={handlePayment}>
               <Text
                 color={'#FFF'}
                 fontWeight={600}
@@ -319,6 +353,3 @@ const CartScreenContainer = () => {
 };
 
 export default CartScreenContainer;
-function firestore() {
-  throw new Error('Function not implemented.');
-}

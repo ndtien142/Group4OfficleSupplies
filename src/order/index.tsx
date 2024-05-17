@@ -20,8 +20,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useGetDetailProduct } from '@group4officesupplies/detail-product/hooks/useGetDetailProduct';
 import { IProduct } from '@group4officesupplies/common/interface/product.interface';
 import { getProductById } from '@group4officesupplies/common/services/product.service';
-import { useGetOrder } from './hooks/useGetOrder';
+import { useGetOrders } from './hooks/useGetOrder';
 import { useAppSelector } from '@group4officesupplies/common/hooks/useAppSelector';
+import OrderDetails from './components/OrderDetails';
 
 const OrderScreenContainer = () => {
   const router = useRoute();
@@ -29,7 +30,7 @@ const OrderScreenContainer = () => {
   const { userId } = useAppSelector(state => state.rootConfigSliceReducer);
   const userID = userId.trim().replace(/['"]+/g, '');
   const navigation = useNavigation();
-  const { data: orders, isLoading } = useGetOrder(userID as string);
+  const { data: orders, isLoading } = useGetOrders(userID as string);
 
   return (
     <SafeAreaView>
@@ -67,34 +68,23 @@ const OrderScreenContainer = () => {
                   flexDirection="row"
                   alignItems="center"
                   marginLeft={'-100px'}>
-                  <Image
-                    source={{
-                      uri: order?.image, // Sử dụng link hình ảnh từ sản phẩm
-                    }}
-                    width={'80px'}
-                    height={'80px'}
-                    marginLeft={'20px'}
-                    alt={'image product'}
-                  />
                   <Box
                     borderRadius={'12px'}
                     width={'200px'}
                     height={'80px'}
                     marginLeft={'20px'}
                     justifyContent={'space-between'}>
-                    <HStack width={'300px'}>
-                      <Text color={'#000'}>{order.title}</Text>{' '}
-                      {/* Hiển thị tên sản phẩm */}
+                    <HStack>
+                      <Text>Ngày đặt: {order.createdAt}</Text>
                     </HStack>
                     <HStack>
-                      <Text>Trạng thái: {order.state}</Text>
+                      <Text color={'#000'}>Tổng tiền: {order.total} </Text>{' '}
                     </HStack>
                     <HStack>
-                      <Text color={'#000'}>Số lượng: {order.quantity} </Text>{' '}
-                      <Text color={'#000'}>Đơn giá: {order.price} </Text>{' '}
-                      <Text color={'#000'}>
-                        Thành tiền:{order.quantity * order.price}{' '}
-                      </Text>{' '}
+                      <Text color={'#000'}>Trạng thái: {order.state} </Text>{' '}
+                    </HStack>
+                    <HStack>
+                      <OrderDetails orderItems={order} />
                     </HStack>
                   </Box>
                 </Box>

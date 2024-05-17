@@ -11,6 +11,14 @@ export interface ICartItem {
   quantity: number;
 }
 
+export interface IOrderList {
+  userID: string;
+  orders: IOrder[];
+  createdAt: string;
+  total: string;
+  state: string;
+}
+
 export interface IOrder {
   brand: string;
   date: string;
@@ -19,5 +27,4 @@ export interface IOrder {
   price: number;
   quantity: number;
   title: string;
-  state: string;
 }
