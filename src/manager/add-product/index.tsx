@@ -25,6 +25,8 @@ import ManagerHeader from '../components/ManagerHeader';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Box, ScrollView, Stack } from 'native-base';
 import { BOTTOM_TAB_MANAGER } from '@group4officesupplies/common/constants/route.constant';
+import storage from '@react-native-firebase/storage';
+import { getBlobFroUri } from '@group4officesupplies/common/utils/utils.common';
 
 const ManagerAddNewProductContainer = () => {
   const dispatch = useAppDispatch();
@@ -34,6 +36,7 @@ const ManagerAddNewProductContainer = () => {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [imageUri, setImageUri] = useState('');
+  const refImage = storage().ref();
   const { imagePicker } = useAppSelector(state => state.imagePickerReducer);
 
   const generateId = () => {
@@ -44,13 +47,39 @@ const ManagerAddNewProductContainer = () => {
     dispatch(setIsOpenSelectMethodImagePicker(true));
   };
 
+  const uploadImage = async () => {
+    if (!imagePicker?.uri) {
+      Alert.alert('No image selected');
+      return;
+    }
+    const imageBlob = await getBlobFroUri(imagePicker.uri);
+    console.log('image blob:::', imageBlob);
+
+    const filename = imagePicker.uri.substring(
+      imagePicker.uri.lastIndexOf('/') + 1,
+    );
+    const ref = storage().ref(`images/${filename}`);
+    try {
+      console.log('Uploading');
+      await ref.put(imageBlob);
+      const url = await ref.getDownloadURL();
+      console.log('Uploaded image URL:', url);
+      Alert.alert('Photo uploaded!', `URL: ${url}`);
+      return url;
+    } catch (e) {
+      console.log(e);
+      Alert.alert('Upload failed', e.message);
+    }
+  };
+
   const addProduct = async () => {
+    const imagePicker = await uploadImage();
     const newProduct: IUploadProduct = {
       id: generateId(),
       brand,
       title,
       description,
-      image: imagePicker.uri,
+      image: imagePicker || '',
       price: parseFloat(price),
       status: 'active',
     };

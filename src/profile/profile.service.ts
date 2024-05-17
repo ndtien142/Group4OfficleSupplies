@@ -1,4 +1,3 @@
-import { USER_COLLECTION } from '@group4officesupplies/common/constants/collection.constants';
 import firestore from '@react-native-firebase/firestore';
 import { IUserResponse } from './profile.interface';
 
@@ -20,6 +19,22 @@ export const getProfileUser = async (
     }
   } catch (error) {
     console.error('Error getting product by ID: ', error);
+    throw error;
+  }
+};
+
+export const updateProfileImage = async (
+  userId: string,
+  url: string,
+): Promise<void> => {
+  try {
+    await firestore()
+      .collection('users')
+      .doc(userId.trim().replace(/['"]+/g, ''))
+      .set({ image: url }, { merge: true });
+    console.log('Update user image successfully');
+  } catch (error) {
+    console.error('Error update user image: ', error);
     throw error;
   }
 };

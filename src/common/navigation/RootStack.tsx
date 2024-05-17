@@ -17,6 +17,7 @@ import {
   MANAGER_EDIT_PRODUCT,
   MANAGER_LIST_PRODUCT,
   MANAGER_ADD_NEW_PRODUCT,
+  MY_ORDER,
 } from '../constants/route.constant'; // Assuming INTRO is also a route constant
 import ProfileScreenContainer from '@group4officesupplies/profile/index';
 import HomeScreenContainer from '@group4officesupplies/home';
@@ -30,6 +31,7 @@ import RegisterContainerScreen from '@group4officesupplies/auth/register';
 import ManageListProductContainer from '@group4officesupplies/manager/list';
 import ManagerAddNewProductContainer from '@group4officesupplies/manager/add-product';
 import ManagerEditContainer from '@group4officesupplies/manager/edit-product/ManagerEditContainer';
+import MyOrderContainer from '@group4officesupplies/profile/my-order';
 
 // 🚀 import Constants from file Constants
 
@@ -155,6 +157,11 @@ const RootStack = () => {
       <Stack.Screen
         name={MANAGER_EDIT_PRODUCT}
         component={ManagerEditContainer}
+        options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        name={MY_ORDER}
+        component={MyOrderContainer}
         options={{ headerShown: false, gestureEnabled: false }}
       />
     </Stack.Navigator>

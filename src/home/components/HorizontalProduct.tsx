@@ -32,7 +32,7 @@ const HorizontalProduct = ({
         title="Products"
         handleNavigate={() => setShowAllProducts(true)}
       />
-      <HStack width={'100%'} overflowY={'auto'}>
+      <HStack width={'100%'} overflowY={'auto'} px={3}>
         <FlatList
           horizontal={true}
           showsHorizontalScrollIndicator={false}
